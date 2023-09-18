@@ -29,6 +29,50 @@ SQL Create Context - https://huggingface.co/datasets/b-mc2/sql-create-context
 - Output from this container stored at GCS location
 
 (1) `src/preprocessing/preprocess.py`  - Here we preprocess both the SQL Create Context dataset and the FudanSELab dataset. We delete 
+=======
+AC215 - Milestone2
+
+Project Organization
+------------
+      ├── LICENSE
+      ├── README.md
+      ├── notebooks
+      ├── references
+      ├── requirements.txt
+      ├── setup.py
+      └── src
+            ├── preprocessing
+            │   ├── Dockerfile
+            │   ├── preprocess.py
+            │   └── requirements.txt
+            └── validation
+                  ├── Dockerfile
+                  ├── cv_dvc.py
+                  └── requirements.txt
+
+
+--------
+# AC215 - Milestone2 - ButterFlyer
+
+**Team Members**
+Pavlov Protovief, Paolo Primopadre and Pablo El Padron
+
+**Group Name**
+Awesome Group
+
+**Project**
+In this project we aim to develop an application that can identify various species of butterflies in the wild using computer vision and offer educational content through a chatbot interface.
+
+### Milestone2 ###
+
+We gathered dataset of 1M butterflies representing 17K species. Our dataset comes from following sources - (1),(2),(3) with approx 100GB in size. We parked our dataset in a private Google Cloud Bucket. 
+
+**Preprocess container**
+- This container reads 100GB of data and resizes the image sizes and stores it back to GCP
+- Input to this container is source and destincation GCS location, parameters for resizing, secrets needed - via docker
+- Output from this container stored at GCS location
+
+(1) `src/preprocessing/preprocess.py`  - Here we do preprocessing on our dataset of 100GB, we reduce the image sizes (a parameter that can be changed later) to 128x128 for faster iteration with our process. Now we have dataset at 10GB and saved on GCS. 
 
 (2) `src/preprocessing/requirements.txt` - We used following packages to help us preprocess here - `special butterfly package` 
 
