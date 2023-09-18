@@ -6,8 +6,8 @@ import json
 PROCESSED_DATA_BUCKET_NAME="team-engai-processed-data"
 TRAINING_DATA_BUCKET_NAME="team-engai-training-data"
 TESTING_DATA_BUCKET_NAME="team-engai-testing-data"
-FIELDS=['class_description', 'class_name', 'fields', 'methods_info']
-PYTHON_PROCESSED_DATA_FILE = 'ClassEval_data_processed.json'
+FIELDS=['question', 'context']
+PYTHON_PROCESSED_DATA_FILE = 'sql_create_context_v4_processed.json'
 
 # initialize client and get blobs from bucket 
 client = storage.Client.from_service_account_json('secrets/data-service-account.json')
