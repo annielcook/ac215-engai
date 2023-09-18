@@ -1,28 +1,7 @@
 Team EngAi Milestone 2 Deliverable
 ==============================
 
-AC215 - Milestone2
 
-Project Organization
-------------
-      ├── LICENSE
-      ├── README.md
-      ├── notebooks
-      ├── references
-      ├── requirements.txt
-      ├── setup.py
-      └── src
-            ├── preprocessing
-            │   ├── Dockerfile
-            │   ├── preprocess.py
-            │   └── requirements.txt
-            └── validation
-                  ├── Dockerfile
-                  ├── cv_val.py
-                  └── requirements.txt
-
-
---------
 # AC215 - Milestone2 - mApp
 
 **Team Members**
