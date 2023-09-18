@@ -97,3 +97,6 @@ To run Dockerfile - `Instructions here`
 This folder contains code that is not part of container - for e.g: EDA, any 🔍 🕵️‍♀️ 🕵️‍♂️ crucial insights, reports or visualizations. 
 
 For Milestone 2 - See branch `milestone2`
+=======
+----
+You may adjust this template as appropriate for your project.
