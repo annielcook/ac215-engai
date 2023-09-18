@@ -1,7 +1,6 @@
 Team EngAi Milestone 2 Deliverable
 ==============================
 
-
 # AC215 - Milestone2 - mApp
 
 **Team Members**
