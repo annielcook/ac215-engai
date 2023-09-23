@@ -4,9 +4,9 @@ set -e
 
 export BASE_DIR=$(pwd)
 export SECRETS_DIR=$(pwd)/../secrets/
-export GCS_BUCKET_NAME="mushroom-app-data-demo"
-export GCP_PROJECT="ac215-project"
-export GCP_ZONE="us-central1-a"
+export GCS_BUCKET_NAME="team-engai"
+export GCP_PROJECT="AC215Project"
+export GCP_ZONE="northamerica-northeast2"
 
 # Create the network if we don't have it yet
 docker network inspect data-versioning-network >/dev/null 2>&1 || docker network create data-versioning-network
