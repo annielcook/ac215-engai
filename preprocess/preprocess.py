@@ -8,7 +8,7 @@ FIELDS=['class_description', 'class_name', 'fields', 'methods_info']
 PYTHON_PROCESSED_DATA_FILE = 'ClassEval_data_processed.json'
 
 ## initialize client and get blobs from bucket 
-client = storage.Client.from_service_account_json('secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('preprocess/secrets/data-service-account.json')
 bucket = client.get_bucket(RAW_DATA_BUCKET_NAME)
 blobs = bucket.list_blobs()
 
@@ -24,8 +24,9 @@ for blob in blobs:
         jsonArray = json.loads(blob.getvalue()) 
         
         counter = 0 
-        newData = {}
+        
         for data in jsonArray:
+            newData = {}
             for field in FIELDS:
                 newData[field] = data[field]
 
@@ -35,4 +36,4 @@ for blob in blobs:
 processed_data_bucket = client.get_bucket(PROCEED_DATA_BUCKET_NAME)
 blob = processed_data_bucket.blob(PYTHON_PROCESSED_DATA_FILE)
 
-blob.upload_from_string(str(finalArr))
+blob.upload_from_string(json.dumps(finalArr))
