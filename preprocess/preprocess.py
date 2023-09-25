@@ -16,19 +16,20 @@ finalArr = []
 
 ## for each blob keep the fields mentioned in field
 for blob in blobs:
-    blob = bucket.blob(blob.name)
-    blob = blob.download_as_string()
-    blob = blob.decode('utf-8')
-    blob = StringIO(blob)  #
-    jsonArray = json.loads(blob.getvalue()) 
-    
-    counter = 0 
-    newData = {}
-    for data in jsonArray:
-        for field in FIELDS:
-            newData[field] = data[field]
+    if blob.name == 'ClassEval_data.json':
+        blob = bucket.blob(blob.name)
+        blob = blob.download_as_string()
+        blob = blob.decode('utf-8')
+        blob = StringIO(blob)  #
+        jsonArray = json.loads(blob.getvalue()) 
+        
+        counter = 0 
+        newData = {}
+        for data in jsonArray:
+            for field in FIELDS:
+                newData[field] = data[field]
 
-        finalArr.append(newData)
+            finalArr.append(newData)
 
 ## write processed data to processed data bucket
 processed_data_bucket = client.get_bucket(PROCEED_DATA_BUCKET_NAME)
