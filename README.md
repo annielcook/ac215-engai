@@ -32,7 +32,7 @@ Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
 EngAi Group
 
 **Project**
-In this project we aim to build an application that can generate SQL Data Schemas and the corresponding Python Classes based on text prompt describing the application for which the data schemas are going to be used.
+In this project we aim to build an application that can generate SQL Data Schemas and the corresponding Python Classes based on text prompt describing the application for which the data schemas are going to be used. These data schemas will eventually be used to generate an engineering diagram describing the ERM/object classes needed for the application description provided in the input.
 
 ### Milestone2 ###
 
