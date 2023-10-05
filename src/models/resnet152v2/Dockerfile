@@ -19,5 +19,5 @@ ADD . /
 
 RUN pipenv sync
 
-# Get into the pipenv shell
+# Run the script
 CMD ["/bin/bash" "/run-model.sh"]
