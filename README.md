@@ -55,7 +55,7 @@ SQL Create Context - https://huggingface.co/datasets/b-mc2/sql-create-context
 
 (3) `src/preprocessing/requirements.txt` - We used following packages to help us preprocess here - Google Cloud Python package, and JSON Python package. 
 
-(4) `src/preprocessing/Dockerfile` - This dockerfile starts with `python:3.9-slim-buster`. This <statement> attaches volume to the docker container and also uses secrets (not to be stored on GitHub) to connect to GCS.
+(4) `src/preprocessing/Dockerfile` - This dockerfile starts with `python:3.8-slim-buster`. This <statement> attaches volume to the docker container and also uses secrets (not to be stored on GitHub) to connect to GCS.
 
 To run Dockerfile - enter the below commands in the CLI:
 - cd validation
@@ -77,7 +77,7 @@ To run Dockerfile - enter the below commands in the CLI:
 - io (specifically StringIO)
 - json
 
-(3) `src/validation/Dockerfile` - This dockerfile starts with `python:3.9-slim-buster`. This <statement> attaches volume to the docker container and also uses secrets (not to be stored on GitHub) to connect to GCS.
+(3) `src/validation/Dockerfile` - This dockerfile starts with `python:3.8-slim-buster`. This <statement> attaches volume to the docker container and also uses secrets (not to be stored on GitHub) to connect to GCS.
 
 To run Dockerfile - enter the below commands in the CLI:
 - cd validation
