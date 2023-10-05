@@ -131,3 +131,7 @@ dmypy.json
 # Secrets
 secrets/
 src/secrets/
+
+# data
+team-engai-dogs/
+/team-engai-dogs
