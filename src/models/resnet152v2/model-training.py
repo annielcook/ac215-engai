@@ -2,8 +2,6 @@
 import os
 import keras
 import numpy as np
-from glob import glob
-from tqdm import tqdm 
 
 # Data
 from keras.preprocessing.image import ImageDataGenerator

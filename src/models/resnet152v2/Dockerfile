@@ -20,4 +20,4 @@ ADD . /
 RUN pipenv sync
 
 # Run the script
-CMD ["/bin/bash" "/run-model.sh"]
+CMD ["sh", "-c", "run-model.sh"]
