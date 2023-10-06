@@ -1,7 +1,7 @@
 Team EngAi Milestone 3 Deliverable
 ==============================
 
-AC215 - Milestone2
+AC215 - Milestone 3
 
 Project Organization
 ------------
@@ -54,6 +54,8 @@ Kaggle Dog Age - https://www.kaggle.com/datasets/user164919/the-dogage-dataset
 - Input to this container is source and destincation GCS location, secrets needed - via docker
 - Output from this container stored at GCS location
 
+_Following the Professor's advice, we didn't use Dask for a dataset of this size for now. We are eager to use it in subsequent changes._
+
 (1) `src/preprocessing/preprocess.py`  - Here we preprocess the FudanSELab data set. We read in the raw data from the source GCS bucket, and we turn it into a JSON file. We only kept the following data fields: 'class_description', 'class_name', 'fields', 'methods_info' which are relevant to our application. 
 
 (2) `src/preprocessing/preprocesssql.py`  - Here we preprocess the SQL Create Context data set. We read in the raw data from the source GCS bucket, and we turn it into a JSON file. We only kept the following data fields: 'question, 'context' which are relevant for fine-tuning our application model.
@@ -89,7 +91,11 @@ To run Dockerfile - enter the below commands in the CLI:
 - chmod a+x docker-shell.sh
 - ./docker-shell.sh
 
+**Tensorizing**
+Given that our dataset had 1000s of images we decided to tensorize the data and store it in GCP. Tensorizing the data involved downloading all of the resized data and then serializing it. To serialize the image data we used the raw image bytes, height, width, channel and label and then serialized it using the tf.train.Example call. We then stored each of these tensorized records back to GCP in the same directory structure as the resized data directory structure. 
+
 **Notebooks** 
+
 This folder contains code that is not part of container - for e.g: EDA, any 🔍 🕵️‍♀️ 🕵️‍♂️ crucial insights, reports or visualizations. 
 We added the following files:
  - ExploratoryDataAnalysis.ipynb -- used to explore our datasets, understand the labels involved, and the count of samples for each label.
