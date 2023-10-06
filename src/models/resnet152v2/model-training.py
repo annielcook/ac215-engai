@@ -2,9 +2,11 @@
 import os
 import keras
 import numpy as np
+import time
 
 # Data
 from keras.preprocessing.image import ImageDataGenerator
+from google.cloud import storage
 
 # Model
 from keras import Sequential
@@ -17,19 +19,32 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 # Transfer Learning Models
 from tensorflow.keras.applications import ResNet152V2
 
-TRAINING_PATH = ''
-VALIDATION_PATH = ''
+# Weights and Biases
+import wandb
+from wandb.keras import WandbCallback, WandbMetricsLogger
+
+# Download training data
+
+TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
+
+client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
+blobs = client.list_blobs(TENSORIZED_BUCKET_NAME, prefix="dog_breed_dataset/images/Images")
+
+blobs = list(blobs)
+
+for blob in blobs:
+  print(blob)
+  blob.download_to_filename(blob.name)
+
+DATA_PATH = './dog_breed_dataset/images/Images'
 BREED_COUNT = 120
 
-# Initialize Generator 
-training_gen = ImageDataGenerator(
-    rescale=1./255, 
-    horizontal_flip=True, 
-    vertical_flip=True, 
-    rotation_range=20, 
-)
+# # Specify Model Name
+name = "DogNetV1"
 
-validation_gen = ImageDataGenerator(
+# Initialize Generator 
+
+gen = ImageDataGenerator(
     rescale=1./255, 
     horizontal_flip=True, 
     vertical_flip=True, 
@@ -37,50 +52,75 @@ validation_gen = ImageDataGenerator(
 )
 
 # Load data
-train_ds = training_gen.flow_from_directory(
-    TRAINING_PATH, 
+train_ds = gen.flow_from_directory(
+    DATA_PATH, 
     target_size=(224,224), 
     class_mode='binary', 
     batch_size=32, 
-    shuffle=True, 
+    shuffle=True,
+    subset='training' 
 )
 
-valid_ds = validation_gen.flow_from_directory(
-    VALIDATION_PATH, 
+valid_ds = gen.flow_from_directory(
+    DATA_PATH, 
     target_size=(224,224), 
     class_mode='binary', 
     batch_size=32, 
-    shuffle=True, 
+    shuffle=True,
+    subset='validation'
 )
-
-# # Specify Model Name
-name = "DogNetV1"
 
 # # Pretrained Model
 base_model = ResNet152V2(include_top=False, input_shape=(224,224,3), weights='imagenet')
 base_model.trainable = False # Freeze the Weights
 
 # # Model 
-resnet152V2 = Sequential([
+DogNetV1 = Sequential([
     base_model,
     GlobalAvgPool2D(),
     Dense(224, activation='leaky_relu'),
     Dense(BREED_COUNT, activation='softmax')
 ], name=name)
 
-resnet152V2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy', 'recall', 'precision', 'f1_score'])
+DogNetV1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy', 'recall', 'precision', 'f1_score'])
+
+
+# Initialize W&B
+
+epochs = 100
+
+wandb.init(
+    project = "DogNet",
+    config = {
+        "learning_rate": 0.02,
+        "epochs": epochs,
+        "architecture": "ResNet152V2",
+        "batch_size": 32,
+        "model_name": name
+    },
+    name = DogNetV1.name
+)
+
 
 # # Callbacks
 callbacks = [
-    EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
+    WandbCallback(),
     ModelCheckpoint(filepath=f'{name}.h5', monitor='val_loss', save_best_only=True, verbose=1)
 ]
 
 # # Train
-resnet152V2.fit_generator(
+start_time = time.time()
+DogNetV1.fit_generator(
     train_ds, 
-    epochs=100, 
+    epochs=epochs, 
     validation_data=valid_ds, 
     callbacks=callbacks, 
     verbose=1
 )
+
+execution_time = (time.time() - start_time)/60.0
+
+wandb.config.update({"execution_time": execution_time})
+wandb.run.finish()
+
+
