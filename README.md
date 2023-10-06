@@ -107,5 +107,30 @@ This analysis informed us that dog age model might be biased towards younger dog
 
  - model_testing.ipynb -- used to run 3 different models to check which one performed best (informing our choice of model). We used transfer learning with 2 base architectures (ResNet152V2 and InceptionV3).
 
+**Notebooks** 
+
+This folder contains code that is not part of container - for e.g: EDA, any 🔍 🕵️‍♀️ 🕵️‍♂️ crucial insights, reports or visualizations. 
+We added the following files:
+ - ExploratoryDataAnalysis.ipynb -- used to explore our datasets, understand the labels involved, and the count of samples for each label.
+![Age Label piechart](https://github.com/juanpheusser/ac215_engai/assets/22153363/7828c6f6-2459-4834-a699-01b0f7788345)
+This analysis informed us that dog age model might be biased towards younger dogs because we have more data points for them. 
+
+ - model_testing.ipynb -- used to run 3 different models to check which one performed best (informing our choice of model). We used transfer learning with 2 base architectures (ResNet152V2 and InceptionV3).
+
+**GCP Bucket Structure**
+
+------------
+     team-engai-dogs
+      ├── dog_age_dataset/
+            ├── Expert_Train/
+            ├── PetFinder_All/
+      ├── dog_breed_dataset/
+            ├── annotations/
+            ├── images/
+      └── dvc_store
+
+--------
+We have the same structure for the tensorized data as well, in bucket `team-engai-dogs-tensorized`.
+
 
 ----
