@@ -23,7 +23,7 @@ Project Organization
 
 
 --------
-# AC215 - Milestone2 - mApp
+# AC215 - Milestone 3 - mApp
 
 **Team Members**
 Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
@@ -32,17 +32,22 @@ Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
 EngAi Group
 
 **Project**
-In this project we aim to build an application that can generate SQL Data Schemas and the corresponding Python Classes based on text prompt describing the application for which the data schemas are going to be used. These data schemas will eventually be used to generate an engineering diagram describing the ERM/object classes needed for the application description provided in the input.
+In this project, we aim to build an application that can predict a dog's breed and age using a photo.  
 
-### Milestone2 ###
+### Milestone 3 ###
+
+In this milestone, we extended the pipeline with 3 main changes:
+   (1) Update datasets since we changed our idea from Milestone 2
+   (2) Converted our data from images (.jpg, .png) to TFRecords
+   (3) Trained a first iteration of our model using TensorFlow and the existing ResNet model.
 
 We gathered 2 datasets from the following sources:
 
-FudanSELab - https://github.com/FudanSELab/ClassEval
- - Description of 100 python classes and 412 methods, along with their corresponding code. - Total Size: 2.2 MB
+Kaggle Stanford Dogs - https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset
+ - A dataset of dog pictures with their breeds.
 
-SQL Create Context - https://huggingface.co/datasets/b-mc2/sql-create-context
- - Collection of 78,577 hand annotated SQL queries and SQL Create Table statements. Each data point is comprised of a short description of what the SQL statement does, a SQL statement and a SQL Create Table statement for context - Total Size: 21.8 MB
+Kaggle Dog Age - https://www.kaggle.com/datasets/user164919/the-dogage-dataset
+ - A dataset of dog pictures with their ages. 
 
 **Preprocess container**
 - This container reads 22.9MB of data, deletes fields that are not relevant to our application, and stores it back to GCP.
