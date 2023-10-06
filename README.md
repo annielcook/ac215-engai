@@ -56,9 +56,9 @@ Kaggle Dog Age - https://www.kaggle.com/datasets/user164919/the-dogage-dataset
 
 _Following the Professor's advice, we didn't use Dask for a dataset of this size for now. We are eager to use it in subsequent changes._
 
-(1) `src/preprocessing/preprocess.py`  - Here we preprocess the FudanSELab data set. We read in the raw data from the source GCS bucket, and we turn it into a JSON file. We only kept the following data fields: 'class_description', 'class_name', 'fields', 'methods_info' which are relevant to our application. 
+(1) `src/preprocessing/preprocess_age.py`  - Here we preprocess the Stanford Dogs data set. We read in every image file from the source GCS bucket, resize them to the required 224x224 size, then re-upload them to the processed GCS bucket with the label ('Young','Adult','Source') appended to the file name.
 
-(2) `src/preprocessing/preprocesssql.py`  - Here we preprocess the SQL Create Context data set. We read in the raw data from the source GCS bucket, and we turn it into a JSON file. We only kept the following data fields: 'question, 'context' which are relevant for fine-tuning our application model.
+(2) `src/preprocessing/preprocess_breed.py`  - Here we preprocess the Dog Age data set. We read in every image file from the source GCS bucket, aresize them to the required 224x224 size, then re-upload them to the processed GCS bucket. The label is already accounted for in the filename.
 
 (3) `src/preprocessing/requirements.txt` - We used following packages to help us preprocess here - Google Cloud Python package, and JSON Python package. 
 
@@ -70,6 +70,9 @@ To run Dockerfile - enter the below commands in the CLI:
 - ./docker-shell.sh
 
 **Cross validation, Data Versioning**
+
+_Given our use of Tensorflow, this section may no longer be needed._
+
 - This container reads preprocessed dataset and creates validation split and uses dvc for versioning.
 - Input to this container is source GCS location, parameters if any, secrets needed - via docker
 - Output is flat file with cross validation splits
