@@ -1,4 +1,4 @@
-Team EngAi Milestone 2 Deliverable
+Team EngAi Milestone 3 Deliverable
 ==============================
 
 AC215 - Milestone2
@@ -23,7 +23,7 @@ Project Organization
 
 
 --------
-# AC215 - Milestone 3 - mApp
+# AC215 - Milestone 3 - DogWatcher (powered by DogNet)
 
 **Team Members**
 Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
@@ -50,8 +50,8 @@ Kaggle Dog Age - https://www.kaggle.com/datasets/user164919/the-dogage-dataset
  - A dataset of dog pictures with their ages. 
 
 **Preprocess container**
-- This container reads 22.9MB of data, deletes fields that are not relevant to our application, and stores it back to GCP.
-- Input to this container is source and destincation GCS location, parameters for deleting fields, secrets needed - via docker
+- This container reads 2.8GB of data, resizes the images (224x224), and stores it back to GCP.
+- Input to this container is source and destincation GCS location, secrets needed - via docker
 - Output from this container stored at GCS location
 
 (1) `src/preprocessing/preprocess.py`  - Here we preprocess the FudanSELab data set. We read in the raw data from the source GCS bucket, and we turn it into a JSON file. We only kept the following data fields: 'class_description', 'class_name', 'fields', 'methods_info' which are relevant to our application. 
@@ -91,6 +91,12 @@ To run Dockerfile - enter the below commands in the CLI:
 
 **Notebooks** 
 This folder contains code that is not part of container - for e.g: EDA, any 🔍 🕵️‍♀️ 🕵️‍♂️ crucial insights, reports or visualizations. 
+We added the following files:
+ - ExploratoryDataAnalysis.ipynb -- used to explore our datasets, understand the labels involved, and the count of samples for each label.
+![Age Label piechart](https://github.com/juanpheusser/ac215_engai/assets/22153363/7828c6f6-2459-4834-a699-01b0f7788345)
+This analysis informed us that dog age model might be biased towards younger dogs because we have more data points for them. 
+
+ - model_testing.ipynb -- used to run 3 different models to check which one performed best (informing our choice of model). We used transfer learning with 2 base architectures (ResNet152V2 and InceptionV3).
+
 
 ----
-You may adjust this template as appropriate for your project.
