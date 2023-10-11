@@ -22,7 +22,7 @@ def resize_img(fn, blb, proc_bkt):
 
 RAW_BREED_NAME="team-engai-dogs"
 RAW_BREED_PREF="dog_breed_dataset/images/Images"
-client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('../secrets/data-service-accounts.json')
 blobs_breed = client.list_blobs(RAW_BREED_NAME, prefix=RAW_BREED_PREF)
 
 PROC_BREED_NAME="team-engai-dogs-processed"

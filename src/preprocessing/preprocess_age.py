@@ -22,7 +22,7 @@ def resize_img(fn, blb, proc_bkt):
 
 RAW_AGE_NAME="team-engai-dogs"
 RAW_AGE_PREF="dog_age_dataset/Expert_Train/Expert_TrainEval"
-client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('../secrets/data-service-accounts.json')
 blobs_age = client.list_blobs(RAW_AGE_NAME, prefix=RAW_AGE_PREF)
 
 PROC_AGE_NAME="team-engai-dogs-processed"
