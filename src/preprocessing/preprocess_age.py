@@ -1,15 +1,11 @@
-from google.cloud import storage
-from google.colab import drive
-import torch
-from torchvision import transforms
-from PIL import Image
-import PIL
+import re
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
-import re
-import io
-import torchvision as tv
+
+from google.cloud import storage
+from torchvision import transforms
+from PIL import Image
+
 
 def resize_img(fn, blb, proc_bkt):
 	blb.download_to_filename(fn)
@@ -20,7 +16,7 @@ def resize_img(fn, blb, proc_bkt):
 	image_tensor = image_tensor.unsqueeze(0)
 	image_tensors = tf.image.resize(image_tensor, [224, 224], method=tf.image.ResizeMethod.BILINEAR, preserve_aspect_ratio=False)
 	img = tf.image.convert_image_dtype(image_tensors[0], dtype=tf.uint8)
-	PIL.Image.fromarray(np.array(img)).save(fn)
+	Image.fromarray(np.array(img)).save(fn)
 	destination_blob = proc_bkt.blob(blb.name)
 	destination_blob.upload_from_filename(fn)
 
@@ -32,10 +28,7 @@ blobs_age = client.list_blobs(RAW_AGE_NAME, prefix=RAW_AGE_PREF)
 PROC_AGE_NAME="team-engai-dogs-processed"
 proc_age = client.get_bucket(PROC_AGE_NAME)
 
-drive.mount('/content/drive')
-
 blobs_age = list(blobs_age)
-
 for blob in blobs_age:
   try:
     if ".DS_Store" not in blob.name:

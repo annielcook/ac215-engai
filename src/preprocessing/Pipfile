@@ -4,14 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-google-api-core = "==2.11.1"
-google-auth = "==2.23.0"
-google-cloud-core = "==2.3.3"
-google-cloud-storage = "==2.11.0"
-google-crc32c = "==1.5.0"
-google-resumable-media = "==2.6.0"
-googleapis-common-protos = "==1.60.0"
-grpclib = "==0.4.3"
+torchvision = "*"
+pillow = "*"
+google-cloud-storage = "*"
+tensorflow = "*"
 
 [dev-packages]
 
