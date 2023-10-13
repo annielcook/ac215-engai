@@ -1,6 +1,5 @@
 # Common 
 import os
-import keras
 import numpy as np
 import time
 
@@ -10,27 +9,27 @@ from google.cloud import storage
 
 # Model
 from keras import Sequential
-from keras.models import load_model
 from keras.layers import Dense, GlobalAvgPool2D
 
 # Callbacks
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import ModelCheckpoint
 
 # Transfer Learning Models
 from tensorflow.keras.applications import ResNet152V2
 
 # Weights and Biases
 import wandb
-from wandb.keras import WandbCallback, WandbMetricsLogger
+from wandb.keras import WandbCallback
 
 # Download training data
 
 TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
 
-client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
 blobs = client.list_blobs(TENSORIZED_BUCKET_NAME, prefix="dog_breed_dataset/images/Images")
 
 blobs = list(blobs)
+print(f'Found {len(blobs)} blobs to train with!')
 
 for blob in blobs:
   print(blob)
@@ -39,7 +38,7 @@ for blob in blobs:
 DATA_PATH = './dog_breed_dataset/images/Images'
 BREED_COUNT = 120
 
-# # Specify Model Name
+# Specify Model Name
 name = "DogNetV1"
 
 # Initialize Generator 

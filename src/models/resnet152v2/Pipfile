@@ -9,6 +9,8 @@ tensorflow = "*"
 pandas = "*"
 seaborn = "*"
 matplotlib = "*"
+google-cloud-storage = "*"
+wandb = "*"
 
 [dev-packages]
 
