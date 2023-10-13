@@ -1,25 +1,16 @@
 ## This script takes the resized images from the GCP bucket
 ## and then tensorizes the data
+
 from google.cloud import storage
-from google.colab import drive
-import torch
 from torchvision import transforms
 from PIL import Image
-import PIL
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
 import re
-import io
-import torchvision as tv
 import tensorflow as tf
-import os
 
 
 PROCESSED_BUCKET_NAME="team-engai-dogs-processed"
-PROCESSED_BUCKET_NAME_PREFIX="dog_breed_dataset/images/Images"
+PROCESSED_BUCKET_NAME_PREFIX="dog_age_dataset/Expert_Train/Expert_TrainEval"
 TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
-
 
 ## function to take in image bytes and a label for the image and tensorizing
 ## the input
@@ -38,34 +29,39 @@ def create_example(image_bytes, label):
 
 convert_tensor = transforms.ToTensor()
 ## Read resized data from bucket
-client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
 blobs = client.list_blobs(PROCESSED_BUCKET_NAME, prefix=PROCESSED_BUCKET_NAME_PREFIX)
 proc_bucket = client.get_bucket(PROCESSED_BUCKET_NAME)
 
 tensor_bucket = client.get_bucket(TENSORIZED_BUCKET_NAME)
 blobs = list(blobs)
 
-breed_to_int = {}
-count = 0
+print(f'Found {len(blobs)} blobs to tensorize!')
+## Tensorize the data and push it to a new GCP bucket
 for blob in blobs:
-  path = os.path.dirname(blob.name)
-  breed_name = os.path.basename(path)
-  class_label = breed_name[breed_name.index('-') + 1:]
-  suffix = ".jpg"
-  if re.search(r"png",blob.name):
-    suffix = '.png'
-  if class_label in breed_to_int:
-    class_int_label = breed_to_int[class_label]
-  else:
-    breed_to_int[class_label] = count
-    class_int_label = count
-    count += 1
-  file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_label) + suffix
-    # print(file_name)
-  blob.download_to_filename(file_name)
-  image =Image.open(file_name)
-  image_tensor = convert_tensor(image)
-  img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
-  example = create_example(bytes(img), class_int_label)
-  destination_blob = tensor_bucket.blob(blob.name)
-  destination_blob.upload_from_string(example)
+
+    if re.search(r"Adult", blob.name):
+        print("Adult")
+        class_label = 1
+    elif re.search(r"Senior", blob.name):
+        print("Senior")
+        class_label = 2
+    elif re.search(r"Young", blob.name):
+        print("Young")
+        class_label = 3
+    if (not blob.name.endswith("/")):
+        if re.search(r"png", blob.name):
+            suffix = '.png'
+        else:
+            suffix = '.jpg'
+        file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_label) + suffix
+        # print(file_name)
+        blob.download_to_filename(file_name)
+        image = Image.open(file_name)
+        image_tensor = convert_tensor(image)
+        img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
+        example = create_example(bytes(img), class_label)
+        destination_blob = tensor_bucket.blob(blob.name)
+        destination_blob.upload_from_string(example)
+
+print('Tensorizing complete!')
