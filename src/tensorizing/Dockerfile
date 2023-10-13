@@ -29,4 +29,4 @@ ADD --chown=app:app . /app
 # CMD ["-c", "pipenv shell"]
 
 # Entry point
-ENTRYPOINT ["/bin/bash", "pipenv shell"]
+ENTRYPOINT ["/bin/bash","./docker-entrypoint.sh"]

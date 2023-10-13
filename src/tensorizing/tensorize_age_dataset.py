@@ -14,7 +14,7 @@ TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
 
 ## function to take in image bytes and a label for the image and tensorizing
 ## the input
-def create_example(image_bytes, label):
+def create_tensorized_file(image_bytes, label):
     # Create a dictionary with the image data and label
     feature = {
         'image': tf.train.Feature(bytes_list=tf.train.BytesList(value=[image_bytes])),
@@ -55,12 +55,12 @@ for blob in blobs:
         else:
             suffix = '.jpg'
         file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_label) + suffix
-        # print(file_name)
-        blob.download_to_filename(file_name)
-        image = Image.open(file_name)
+        local_file_name = 'curr_image' + suffix
+        blob.download_to_filename(local_file_name)
+        image = Image.open(local_file_name)
         image_tensor = convert_tensor(image)
         img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
-        example = create_example(bytes(img), class_label)
+        example = create_tensorized_file(bytes(img), class_label)
         destination_blob = tensor_bucket.blob(blob.name)
         destination_blob.upload_from_string(example)
 

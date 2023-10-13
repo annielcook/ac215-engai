@@ -8,6 +8,7 @@ torchvision = "*"
 pillow = "*"
 google-cloud-storage = "*"
 tensorflow = "*"
+os = "*"
 
 [dev-packages]
 

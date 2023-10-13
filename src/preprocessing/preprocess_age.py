@@ -7,18 +7,19 @@ from torchvision import transforms
 from PIL import Image
 
 
-def resize_img(fn, blb, proc_bkt):
-	blb.download_to_filename(fn)
-	image = Image.open(fn)
-	convert_tensor = transforms.ToTensor()
-	image_tensor = convert_tensor(image)
-	image_tensor = image_tensor.permute(1, 2, 0)
-	image_tensor = image_tensor.unsqueeze(0)
-	image_tensors = tf.image.resize(image_tensor, [224, 224], method=tf.image.ResizeMethod.BILINEAR, preserve_aspect_ratio=False)
-	img = tf.image.convert_image_dtype(image_tensors[0], dtype=tf.uint8)
-	Image.fromarray(np.array(img)).save(fn)
-	destination_blob = proc_bkt.blob(blb.name)
-	destination_blob.upload_from_filename(fn)
+def resize_img(blb, proc_bkt, curr_ext):
+    local_image_file = 'curr_image' + curr_ext
+    blb.download_to_filename(local_image_file)
+    image = Image.open(local_image_file)
+    convert_tensor = transforms.ToTensor()
+    image_tensor = convert_tensor(image)
+    image_tensor = image_tensor.permute(1, 2, 0)
+    image_tensor = image_tensor.unsqueeze(0)
+    image_tensors = tf.image.resize(image_tensor, [224, 224], method=tf.image.ResizeMethod.BILINEAR, preserve_aspect_ratio=False)
+    img = tf.image.convert_image_dtype(image_tensors[0], dtype=tf.uint8)
+    Image.fromarray(np.array(img)).save(local_image_file)
+    destination_blob = proc_bkt.blob(blb.name)
+    destination_blob.upload_from_filename(local_image_file)
 
 RAW_AGE_NAME="team-engai-dogs"
 RAW_AGE_PREF="dog_age_dataset/Expert_Train/Expert_TrainEval"
@@ -44,10 +45,13 @@ for blob in blobs_age:
         print("Young")
         label = "Young"
       if(not blob.name.endswith("/")):
-        file_name = blob.name.split('/')[-1].split('.')[0] + "_" + label + ".jpg"
-        resize_img(file_name, blob, proc_age)
-  except:
-    print("got exception" + blob.name)
+        curr_ext = '.jpg'
+        if blob.name.endswith('png'):
+            curr_ext = '.png'
+        file_name = blob.name.split('/')[-1].split('.')[0] + "_" + label + curr_ext
+        resize_img(file_name, blob, proc_age, curr_ext)
+  except Exception as e:
+    print("got exception" + e)
     continue
 
 print('Resizing complete!')

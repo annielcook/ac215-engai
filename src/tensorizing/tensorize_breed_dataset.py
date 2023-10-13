@@ -54,9 +54,9 @@ for blob in blobs:
     class_int_label = count
     count += 1
   file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_label) + suffix
-    # print(file_name)
-  blob.download_to_filename(file_name)
-  image =Image.open(file_name)
+  local_file_name = 'curr_image' + suffix
+  blob.download_to_filename(local_file_name)
+  image =Image.open(local_file_name)
   image_tensor = convert_tensor(image)
   img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
   example = create_example(bytes(img), class_int_label)

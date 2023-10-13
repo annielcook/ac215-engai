@@ -23,7 +23,8 @@ docker run --rm --name tensorizing -ti \
 -e GCP_PROJECT=$GCP_PROJECT \
 -e GCP_ZONE=$GCP_ZONE \
 -e GCS_BUCKET_NAME=$GCS_BUCKET_NAME \
---network data-versioning-network data-version-cli
+-e LD_PRELOAD=$LD_PRELOAD \
+--network data-versioning-network tensorizing
 
 # Below replaced by `mount` above.
 # -v "$BASE_DIR":/app \
