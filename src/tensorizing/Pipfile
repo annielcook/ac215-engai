@@ -24,11 +24,9 @@ urllib3 = "==1.26.16"
 tensorflow = "*"
 torch = "*"
 torchvision = "*"
-numpy = "*"
-matplotlib = "*"
 google-cloud = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.8"

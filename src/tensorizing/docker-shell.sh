@@ -12,15 +12,19 @@ export GCP_ZONE="northamerica-northeast2"
 docker network inspect data-versioning-network >/dev/null 2>&1 || docker network create data-versioning-network
 
 # Build the image based on the Dockerfile
-docker build -t data-preprocessing-cli --platform=linux/arm64/v8 -f Dockerfile .
+docker build -t tensorizing --platform=linux/arm64/v8 -f Dockerfile .
 
 # Run Container
-docker run --rm --name data-version-cli -ti \
--v "$BASE_DIR":/app \
--v "$SECRETS_DIR":/secrets \
+docker run --rm --name tensorizing -ti \
+--mount type=bind,source="$BASE_DIR",target=/app \
+--mount type=bind,source="$SECRETS_DIR",target=/secrets \
 -v ~/.gitconfig:/etc/gitconfig \
 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/data-service-account.json \
 -e GCP_PROJECT=$GCP_PROJECT \
 -e GCP_ZONE=$GCP_ZONE \
 -e GCS_BUCKET_NAME=$GCS_BUCKET_NAME \
 --network data-versioning-network data-version-cli
+
+# Below replaced by `mount` above.
+# -v "$BASE_DIR":/app \
+# -v "$SECRETS_DIR":/secrets \
