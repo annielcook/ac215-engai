@@ -19,8 +19,8 @@ docker build -t data-preprocessing --platform=linux/arm64/v8 -f Dockerfile .
 
 # Run Container
 docker run --rm --name data-preprocessing -ti \
--v "$BASE_DIR":/app \
--v "$SECRETS_DIR":/secrets \
+--mount type=bind,source="$BASE_DIR",target=/app \
+--mount type=bind,source="$SECRETS_DIR",target=/secrets \
 -v ~/.gitconfig:/etc/gitconfig \
 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/data-service-account.json \
 -e GCP_PROJECT=$GCP_PROJECT \
@@ -28,3 +28,7 @@ docker run --rm --name data-preprocessing -ti \
 -e GCS_BUCKET_NAME=$GCS_BUCKET_NAME \
 -e LD_PRELOAD=$LD_PRELOAD \
 --network data-versioning-network data-preprocessing
+
+# Below replaced by `mount` above.
+# -v "$BASE_DIR":/app \
+# -v "$SECRETS_DIR":/secrets \

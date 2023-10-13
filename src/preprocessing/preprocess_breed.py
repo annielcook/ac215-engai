@@ -22,7 +22,7 @@ def resize_img(fn, blb, proc_bkt):
 
 RAW_BREED_NAME="team-engai-dogs"
 RAW_BREED_PREF="dog_breed_dataset/images/Images"
-client = storage.Client.from_service_account_json('../secrets/data-service-accounts.json')
+client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
 blobs_breed = client.list_blobs(RAW_BREED_NAME, prefix=RAW_BREED_PREF)
 
 PROC_BREED_NAME="team-engai-dogs-processed"
@@ -30,9 +30,12 @@ proc_breed = client.get_bucket(PROC_BREED_NAME)
 
 
 blobs_breed = list(blobs_breed)
+print(f'Found {len(blobs_breed)} blobs to resize!')
 
 for blob in blobs_breed:
   if ".DS_Store" not in blob.name:
       if(not blob.name.endswith("/")):
         file_name = blob.name.split('/')[-1]
         resize_img(file_name, blob, proc_breed)
+
+print('Resizing complete!')
