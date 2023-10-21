@@ -64,8 +64,8 @@ def parse_tfrecord_example(example_proto):
   # Label
   label = tf.cast(parsed_example['label'], tf.int64)
   label = tf.one_hot(label, num_classes)
-  print(label.shape)
-  label = tf.reshape(label, [-1, num_classes])
+  #print(label.shape)
+  #label = tf.reshape(label, [num_classes])
 
   return image, label
 
@@ -118,7 +118,7 @@ DogNetV1 = Sequential([
     Dense(BREED_COUNT, activation='softmax')
 ], name=name)
 
-DogNetV1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+DogNetV1.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 
 # Initialize W&B
