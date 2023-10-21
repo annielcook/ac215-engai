@@ -4,15 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
-tensorflow = "*"
-pandas = "*"
-seaborn = "*"
-matplotlib = "*"
-google-cloud-storage = "*"
+numpy = "1.23.5"
+tensorflow = "2.13.0"
+google-cloud = "*"
 wandb = "*"
+google-cloud-storage = "2.8.0"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

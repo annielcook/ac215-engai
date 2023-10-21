@@ -1,13 +1,12 @@
 # Common 
 import os
-import numpy as np
 import time
 
 # Data
-from keras.preprocessing.image import ImageDataGenerator
 from google.cloud import storage
 
 # Model
+import tensorflow as tf
 from keras import Sequential
 from keras.layers import Dense, GlobalAvgPool2D
 
@@ -21,53 +20,91 @@ from tensorflow.keras.applications import ResNet152V2
 import wandb
 from wandb.keras import WandbCallback
 
-# Download training data
 
-TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
-
+# Connect to GCS Bucket
+TENSORIZED_DATA_BUCKET_NAME="team-engai-dogs-tensorized"
 client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
-blobs = client.list_blobs(TENSORIZED_BUCKET_NAME, prefix="dog_breed_dataset/images/Images")
+blobs = client.list_blobs(TENSORIZED_DATA_BUCKET_NAME, prefix='dog_breed_dataset/images/Images')
 
-blobs = list(blobs)
-print(f'Found {len(blobs)} blobs to train with!')
-
+print("Blobs:")
+n_files = 0
 for blob in blobs:
-  print(blob)
-  blob.download_to_filename(blob.name)
+  if not os.path.exists("train"):
+    os.makedirs("train")
 
-DATA_PATH = './dog_breed_dataset/images/Images'
-BREED_COUNT = 120
+  filename = blob.name.split('/')[-1]
+  blob.download_to_filename('train/' + filename)
+  n_files += 1
+
+print("Total files: " + str(n_files))
+
+# Create a dictionary with the image data and label
+feature_description = {
+    'image': tf.io.FixedLenFeature([], tf.string),
+    'height':tf.io.FixedLenFeature([], tf.int64),
+    'width':tf.io.FixedLenFeature([], tf.int64),
+    'channel':tf.io.FixedLenFeature([], tf.int64),
+    'label': tf.io.FixedLenFeature([], tf.int64)
+}
+num_channels = 3
+image_height = 224
+image_width = 224
+num_classes = 80
+batch_size = 32
+
+def parse_tfrecord_example(example_proto):
+  parsed_example = tf.io.parse_single_example(example_proto, feature_description)
+
+  # Image
+  #image = tf.image.decode_jpeg(parsed_example['image'])
+  image = tf.io.decode_raw(parsed_example['image'], tf.uint8)
+  image.set_shape([num_channels * image_height * image_width])
+  image = tf.reshape(image, [image_height, image_width, num_channels])
+
+  # Label
+  label = tf.cast(parsed_example['label'], tf.int64)
+  label = tf.one_hot(label, num_classes)
+  print(label.shape)
+  label = tf.reshape(label, [-1, num_classes])
+
+  return image, label
+
+# Normalize pixels
+def normalize(image, label):
+  image = image/255
+  return image, label
+
+# Read the tfrecord files
+tfrecord_files = tf.data.Dataset.list_files('train/*')
+
+tfrecord_files = tfrecord_files.shuffle(buffer_size=n_files)
+
+validation_ratio = 0.2
+
+num_validation_files = int(validation_ratio * n_files)
+
+train_tfrecord_files = tfrecord_files.skip(num_validation_files)
+validation_tfrecord_files = tfrecord_files.take(num_validation_files)
+
+
+train_data = train_tfrecord_files.flat_map(tf.data.TFRecordDataset)
+train_data = train_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
+print(train_data)
+train_data = train_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
+train_data = train_data.batch(batch_size)
+train_data = train_data.prefetch(buffer_size=tf.data.AUTOTUNE)
+
+validation_data = validation_tfrecord_files.flat_map(tf.data.TFRecordDataset)
+validation_data = validation_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
+validation_data = validation_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
+validation_data = validation_data.batch(batch_size)
+validation_data = validation_data.prefetch(buffer_size=tf.data.AUTOTUNE)
+
+BREED_COUNT = 80
 
 # Specify Model Name
 name = "DogNetV1"
 
-# Initialize Generator 
-
-gen = ImageDataGenerator(
-    rescale=1./255, 
-    horizontal_flip=True, 
-    vertical_flip=True, 
-    rotation_range=20, 
-)
-
-# Load data
-train_ds = gen.flow_from_directory(
-    DATA_PATH, 
-    target_size=(224,224), 
-    class_mode='binary', 
-    batch_size=32, 
-    shuffle=True,
-    subset='training' 
-)
-
-valid_ds = gen.flow_from_directory(
-    DATA_PATH, 
-    target_size=(224,224), 
-    class_mode='binary', 
-    batch_size=32, 
-    shuffle=True,
-    subset='validation'
-)
 
 # # Pretrained Model
 base_model = ResNet152V2(include_top=False, input_shape=(224,224,3), weights='imagenet')
@@ -81,12 +118,13 @@ DogNetV1 = Sequential([
     Dense(BREED_COUNT, activation='softmax')
 ], name=name)
 
-DogNetV1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy', 'recall', 'precision', 'f1_score'])
+DogNetV1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 
 # Initialize W&B
 
 epochs = 100
+
 
 wandb.init(
     project = "DogNet",
@@ -101,18 +139,19 @@ wandb.init(
 )
 
 
+
 # # Callbacks
 callbacks = [
-    WandbCallback(),
+    #WandbCallback(),
     ModelCheckpoint(filepath=f'{name}.h5', monitor='val_loss', save_best_only=True, verbose=1)
 ]
 
 # # Train
 start_time = time.time()
-DogNetV1.fit_generator(
-    train_ds, 
+DogNetV1.fit(
+    train_data, 
     epochs=epochs, 
-    validation_data=valid_ds, 
+    validation_data=validation_data, 
     callbacks=callbacks, 
     verbose=1
 )

@@ -1,5 +1,5 @@
 # Use the official Debian-hosted Python image
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster
 
 # Tell pipenv where the shell is. 
 # This allows us to use "pipenv shell" as a container entry point.
@@ -28,4 +28,5 @@ ADD --chown=app:app . /app
 # Run the script
 # CMD ["sh", "-c", "run-model.sh"]
 # ENTRYPOINT ["/bin/bash", "run-model.sh"]
-ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash","./docker-entrypoint.sh"]
