@@ -1,0 +1,24 @@
+# PIPELINE DEFINITION
+# Name: data-preprocessing-pipeline
+components:
+  comp-data-preprocessing-component:
+    executorLabel: exec-data-preprocessing-component
+deploymentSpec:
+  executors:
+    exec-data-preprocessing-component:
+      container:
+        image: nevilgeorge/eng-ai-preprocessing
+pipelineInfo:
+  name: data-preprocessing-pipeline
+root:
+  dag:
+    tasks:
+      data-preprocessing-component:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessing-component
+        taskInfo:
+          name: data-preprocessing-component
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.3.0
