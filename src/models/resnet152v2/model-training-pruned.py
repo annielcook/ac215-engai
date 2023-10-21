@@ -169,7 +169,7 @@ callbacks = [
 
 # # Train
 start_time = time.time()
-DogNetV1.fit(
+DogNetV1_for_pruning.fit(
     train_data, 
     epochs=epochs, 
     validation_data=validation_data, 
