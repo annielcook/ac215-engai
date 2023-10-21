@@ -20,6 +20,8 @@ from tensorflow.keras.applications import ResNet152V2
 import wandb
 from wandb.keras import WandbCallback
 
+import pdb; pdb.set_trace()
+
 
 # Connect to GCS Bucket
 TENSORIZED_DATA_BUCKET_NAME="team-engai-dogs-tensorized"
@@ -89,6 +91,7 @@ validation_tfrecord_files = tfrecord_files.take(num_validation_files)
 
 train_data = train_tfrecord_files.flat_map(tf.data.TFRecordDataset)
 train_data = train_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
+breakpoint()
 print(train_data)
 train_data = train_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
 train_data = train_data.batch(batch_size)
