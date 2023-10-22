@@ -7,7 +7,7 @@ deploymentSpec:
   executors:
     exec-data-preprocessing-component:
       container:
-        image: nevilgeorge/eng-ai-preprocessing
+        image: abzp/ac215-model-training:abpujare
 pipelineInfo:
   name: data-preprocessing-pipeline
 root:

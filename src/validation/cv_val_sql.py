@@ -10,7 +10,7 @@ FIELDS=['question', 'context']
 PYTHON_PROCESSED_DATA_FILE = 'sql_create_context_v4_processed.json'
 
 # initialize client and get blobs from bucket 
-client = storage.Client.from_service_account_json('secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('secrets/compute-service-account.json')
 bucket = client.get_bucket(PROCESSED_DATA_BUCKET_NAME)
 blobs = bucket.list_blobs()
 

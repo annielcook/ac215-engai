@@ -14,7 +14,7 @@ BUCKET_URI = f"gs://{GCS_BUCKET_NAME}"
 PIPELINE_ROOT = f"{BUCKET_URI}/pipeline_root/root"
 GOOGLE_APP_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-DATA_PREPROCESSING_IMAGE = "nevilgeorge/eng-ai-preprocessing"
+DATA_PREPROCESSING_IMAGE = "abzp/ac215-model-training:abpujare"
 
 
 def generate_uuid(length: int = 8) -> str:
@@ -62,7 +62,7 @@ def main(args=None):
             enable_caching=False,
         )
 
-        job.run(service_account=gcs_service_account)
+        job.run(service_account='32226619505-compute@developer.gserviceaccount.com')
 
 if __name__ == "__main__":
     # Generate the inputs arguments parser

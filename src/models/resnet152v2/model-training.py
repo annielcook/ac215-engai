@@ -25,7 +25,7 @@ from wandb.keras import WandbCallback
 
 TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
 
-client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('../secrets/compute-service-account.json')
 blobs = client.list_blobs(TENSORIZED_BUCKET_NAME, prefix="dog_breed_dataset/images/Images")
 
 blobs = list(blobs)
