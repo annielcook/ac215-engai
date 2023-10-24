@@ -114,7 +114,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-a",
-        "--age_modeL_training",
+        "--age_model_training",
         action="store_true",
         help="Run just the age model training task in the pipeline.",
     )
