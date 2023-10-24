@@ -15,6 +15,7 @@ PIPELINE_ROOT = f"{BUCKET_URI}/pipeline_root/root"
 GOOGLE_APP_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
 DATA_PREPROCESSING_IMAGE = "abzp/ac215-model-training:abpujare"
+# DATA_PREPROCESSING_IMAGE = "vilgeorge/eng-ai-preprocessing"
 
 
 def generate_uuid(length: int = 8) -> str:

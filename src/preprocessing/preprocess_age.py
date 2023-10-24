@@ -49,9 +49,10 @@ for blob in blobs_age:
         if blob.name.endswith('png'):
             curr_ext = '.png'
         file_name = blob.name.split('/')[-1].split('.')[0] + "_" + label + curr_ext
-        resize_img(file_name, blob, proc_age, curr_ext)
+        # resize_img(file_name, blob, proc_age, curr_ext)
+        resize_img(blob, proc_age, curr_ext)
   except Exception as e:
-    print("got exception" + e)
+    print("got exception: " + str(e))
     continue
 
 print('Resizing complete!')

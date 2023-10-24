@@ -40,6 +40,7 @@ for blob in blobs_breed:
           if blob.name.endswith('png'):
               curr_ext = '.png'
         file_name = blob.name.split('/')[-1]
-        resize_img(file_name, blob, proc_breed, curr_ext)
+        # resize_img(file_name, blob, proc_breed, curr_ext)
+        resize_img(blob, proc_breed, curr_ext)
 
 print('Resizing complete!')
