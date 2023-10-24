@@ -1,25 +1,9 @@
 import re
-import tensorflow as tf
-import numpy as np
 
 from google.cloud import storage
-from torchvision import transforms
-from PIL import Image
 
+from util import resize_img
 
-def resize_img(blb, proc_bkt, curr_ext):
-    local_image_file = 'curr_image' + curr_ext
-    blb.download_to_filename(local_image_file)
-    image = Image.open(local_image_file)
-    convert_tensor = transforms.ToTensor()
-    image_tensor = convert_tensor(image)
-    image_tensor = image_tensor.permute(1, 2, 0)
-    image_tensor = image_tensor.unsqueeze(0)
-    image_tensors = tf.image.resize(image_tensor, [224, 224], method=tf.image.ResizeMethod.BILINEAR, preserve_aspect_ratio=False)
-    img = tf.image.convert_image_dtype(image_tensors[0], dtype=tf.uint8)
-    Image.fromarray(np.array(img)).save(local_image_file)
-    destination_blob = proc_bkt.blob(blb.name)
-    destination_blob.upload_from_filename(local_image_file)
 
 RAW_AGE_NAME="team-engai-dogs"
 RAW_AGE_PREF="dog_age_dataset/Expert_Train/Expert_TrainEval"
@@ -49,7 +33,6 @@ for blob in blobs_age:
         if blob.name.endswith('png'):
             curr_ext = '.png'
         file_name = blob.name.split('/')[-1].split('.')[0] + "_" + label + curr_ext
-        # resize_img(file_name, blob, proc_age, curr_ext)
         resize_img(blob, proc_age, curr_ext)
   except Exception as e:
     print("got exception: " + str(e))
