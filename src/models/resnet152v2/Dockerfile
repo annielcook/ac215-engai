@@ -17,7 +17,7 @@ RUN set -ex; \
 WORKDIR /app
 
 # Add Pipfile, Pipfile.lock + python code
-ADD --chown=app:app Pipfile Pipfile.lock run-model.sh /app/
+ADD --chown=app:app Pipfile Pipfile.lock docker-entrypoint.sh /app/
 
 RUN pipenv sync
 

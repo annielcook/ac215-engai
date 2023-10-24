@@ -1,6 +1,7 @@
 # Common 
 import os
 import time
+import tempfile
 
 # Data
 from google.cloud import storage
@@ -19,9 +20,6 @@ from tensorflow.keras.applications import ResNet152V2
 # Weights and Biases
 import wandb
 from wandb.keras import WandbCallback
-
-import pdb; pdb.set_trace()
-
 
 # Connect to GCS Bucket
 TENSORIZED_DATA_BUCKET_NAME="team-engai-dogs-tensorized"
@@ -88,21 +86,17 @@ num_validation_files = int(validation_ratio * n_files)
 train_tfrecord_files = tfrecord_files.skip(num_validation_files)
 validation_tfrecord_files = tfrecord_files.take(num_validation_files)
 
+def get_data(tfrecord_files):
+  data = tfrecord_files.flat_map(tf.data.TFRecordDataset)
+  data = data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
+  data = data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
+  data = data.batch(batch_size)
+  data = data.prefetch(buffer_size=tf.data.AUTOTUNE)
+  return data 
 
-train_data = train_tfrecord_files.flat_map(tf.data.TFRecordDataset)
-train_data = train_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
-breakpoint()
-print(train_data)
-train_data = train_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
-train_data = train_data.batch(batch_size)
-train_data = train_data.prefetch(buffer_size=tf.data.AUTOTUNE)
 
-validation_data = validation_tfrecord_files.flat_map(tf.data.TFRecordDataset)
-validation_data = validation_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
-validation_data = validation_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
-validation_data = validation_data.batch(batch_size)
-validation_data = validation_data.prefetch(buffer_size=tf.data.AUTOTUNE)
-
+train_data = get_data(train_tfrecord_files)
+validation_data = get_data(validation_tfrecord_files)
 BREED_COUNT = 80
 
 # Specify Model Name
@@ -164,4 +158,6 @@ execution_time = (time.time() - start_time)/60.0
 wandb.config.update({"execution_time": execution_time})
 wandb.run.finish()
 
+_, baseline_model_accuracy = DogNetV1.evaluate(validation_data, verbose=0)
 
+print('Baseline test accuracy:', baseline_model_accuracy)
