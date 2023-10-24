@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-torchvision = "*"
 pillow = "*"
 google-cloud-storage = "*"
 tensorflow = "*"
