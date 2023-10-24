@@ -28,4 +28,4 @@ ADD --chown=app:app . /app
 # Run the script
 # CMD ["sh", "-c", "run-model.sh"]
 # ENTRYPOINT ["/bin/bash", "run-model.sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash","./run-model.sh"]

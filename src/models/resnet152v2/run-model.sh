@@ -1,5 +1,3 @@
 #!/bin/bash
 
-pipenv shell
-
-python3 model-training.py
+pipenv run python3 model-training-age-dataset.py
