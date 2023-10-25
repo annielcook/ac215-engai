@@ -116,7 +116,7 @@ validate_data = validate_data.prefetch(buffer_size=tf.data.AUTOTUNE)
 # Pretrained Model
 base_model = ResNet152V2(include_top=False, input_shape=(224,224,3), weights='imagenet')
 base_model.trainable = False # Freeze the Weights
-BREED_COUNT = 3
+AGE_COUNT = 3
 
 # Model Name
 name = "DogNetV1-age"
@@ -126,7 +126,7 @@ DogNetV1_age = Sequential([
     base_model,
     GlobalAvgPool2D(),
     Dense(224, activation='leaky_relu'),
-    Dense(BREED_COUNT, activation='softmax')
+    Dense(AGE_COUNT, activation='softmax')
 ], name=name)
 
 DogNetV1_age.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
