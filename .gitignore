@@ -132,6 +132,7 @@ dmypy.json
 src/secrets/
 src/workflow/secrets/
 src/preprocessing/secrets/
+src/tensorizing/secrets/
 
 # data
 team-engai-dogs/

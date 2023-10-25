@@ -25,8 +25,8 @@ RUN pipenv sync
 # layers when we change a line of code.
 ADD --chown=app:app . /app
 
-# Get into the pipenv shell
-# CMD ["-c", "pipenv shell"]
+# Copy secrets into app/ -- required to run the container on Vertex AI.
+COPY secrets/ /app/secrets/
 
 # Entry point
 ENTRYPOINT ["/bin/bash","./docker-entrypoint.sh"]

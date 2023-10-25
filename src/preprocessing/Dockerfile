@@ -25,7 +25,7 @@ RUN pipenv sync
 # layers when we change a line of code.
 ADD --chown=app:app . /app
 
-# Copy secrets into app/ -- required to run on container on Vertex AI.
+# Copy secrets into app/ -- required to run the container on Vertex AI.
 COPY secrets/ /app/secrets/
 
 # Entry point
