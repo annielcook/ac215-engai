@@ -1,27 +1,24 @@
 # Common
 import os
-import keras
-import numpy as np
-from PIL import Image
+import time
 
 # Google
 from google.cloud import storage
 
-
-# Data
-from keras.preprocessing.image import ImageDataGenerator
-
 # Model
+import tensorflow as tf
 from keras import Sequential
-from keras.models import load_model
 from keras.layers import Dense, GlobalAvgPool2D
 
 # Callbacks
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
-import tensorflow as tf
 # Transfer Learning Models
-from tensorflow.keras.applications import ResNet152V2, InceptionV3
+from tensorflow.keras.applications import ResNet152V2
+
+# Weights and Biases
+import wandb
+from wandb.keras import WandbCallback
 
 
 def parse_tfrecord_example(example_proto):
@@ -102,7 +99,6 @@ batch_size = 32
 os.chdir('breed-data')
 
 
-
 # Read the tfrecord files
 train_tfrecord_files = tf.data.Dataset.list_files('train/*')
 train_data = train_tfrecord_files.flat_map(tf.data.TFRecordDataset)
@@ -113,11 +109,11 @@ train_data = train_data.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 # Read the tfrecord files
 validate_tfrecord_files = tf.data.Dataset.list_files('validate/*')
-validate_data = validate_tfrecord_files.flat_map(tf.data.TFRecordDataset)
-validate_data = validate_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
-validate_data = validate_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
-validate_data = validate_data.batch(batch_size)
-validate_data = validate_data.prefetch(buffer_size=tf.data.AUTOTUNE)
+validation_data = validate_tfrecord_files.flat_map(tf.data.TFRecordDataset)
+validation_data = validation_data.map(parse_tfrecord_example, num_parallel_calls=tf.data.AUTOTUNE)
+validation_data = validation_data.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
+validation_data = validation_data.batch(batch_size)
+validation_data = validation_data.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 # Pretrained Model
 base_model = ResNet152V2(include_top=False, input_shape=(224,224,3), weights='imagenet')
@@ -125,33 +121,54 @@ base_model.trainable = False # Freeze the Weights
 BREED_COUNT = len(breed_to_image_files)
 
 # Model Name
-name1 = "DogNetV1"
+name = "DogNetV1-breed"
 
 # Model
-DogNetV1 = Sequential([
+DogNetV1_breed = Sequential([
     base_model,
     GlobalAvgPool2D(),
     Dense(224, activation='leaky_relu'),
     Dense(BREED_COUNT, activation='softmax')
-], name=name1)
+], name=name)
 
-DogNetV1.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+DogNetV1_breed.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Callbacks
 callbacks = [
     EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
-    ModelCheckpoint(filepath='test.h5', monitor='val_loss', save_best_only=True, verbose=1)
+    ModelCheckpoint(filepath='DogNetV1_breed.h5', monitor='val_loss', save_best_only=True, verbose=1),
+    WandbCallback()
 ]
 
+epochs = 100
+
+wandb.init(
+    project = "DogNet-breed",
+    config = {
+        "learning_rate": 0.02,
+        "epochs": epochs,
+        "architecture": "ResNet152V2",
+        "batch_size": 32,
+        "model_name": name
+    },
+    name = DogNetV1_breed.name
+)
+
+
 # Train
-DogNetV1.fit(
+
+start_time = time.time()
+DogNetV1_breed.fit(
     train_data,
-    epochs=100,
-    validation_data=validate_data,
+    epochs=epochs,
+    validation_data=validation_data,
     callbacks=callbacks,
     verbose=1
 )
+execution_time = (time.time() - start_time)/60.0
 
+wandb.config.update({"execution_time": execution_time})
+wandb.run.finish()
 
 
 

@@ -1,8 +1,6 @@
 # Common
 import os
-import keras
-import numpy as np
-from PIL import Image
+import time
 
 # Google
 from google.cloud import storage
@@ -20,7 +18,11 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 import tensorflow as tf
 # Transfer Learning Models
-from tensorflow.keras.applications import ResNet152V2, InceptionV3
+from tensorflow.keras.applications import ResNet152V2
+
+# Weights and Biases
+import wandb
+from wandb.keras import WandbCallback
 
 def parse_tfrecord_example(example_proto):
   parsed_example = tf.io.parse_single_example(example_proto, feature_description)
@@ -117,29 +119,52 @@ base_model.trainable = False # Freeze the Weights
 BREED_COUNT = 3
 
 # Model Name
-name1 = "DogNetV1"
+name = "DogNetV1-age"
 
 # Model
-DogNetV1 = Sequential([
+DogNetV1_age = Sequential([
     base_model,
     GlobalAvgPool2D(),
     Dense(224, activation='leaky_relu'),
     Dense(BREED_COUNT, activation='softmax')
-], name=name1)
+], name=name)
 
-DogNetV1.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+DogNetV1_age.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Callbacks
 callbacks = [
     EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
-    ModelCheckpoint(filepath='test.h5', monitor='val_loss', save_best_only=True, verbose=1)
+    ModelCheckpoint(filepath='DogNetV1_age.h5', monitor='val_loss', save_best_only=True, verbose=1),
+    WandbCallback()
 ]
 
+
+epochs = 100
+wandb.init(
+    project = "DogNet-breed",
+    config = {
+        "learning_rate": 0.02,
+        "epochs": epochs,
+        "architecture": "ResNet152V2",
+        "batch_size": 32,
+        "model_name": name
+    },
+    name = DogNetV1_age.name
+)
+
+
+
 # Train
-DogNetV1.fit(
+start_time = time.time()
+DogNetV1_age.fit(
     train_data,
-    epochs=100,
+    epochs=epochs,
     validation_data=validate_data,
     callbacks=callbacks,
     verbose=1
 )
+
+execution_time = (time.time() - start_time)/60.0
+
+wandb.config.update({"execution_time": execution_time})
+wandb.run.finish()
