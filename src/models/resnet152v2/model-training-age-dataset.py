@@ -131,14 +131,6 @@ DogNetV1_age = Sequential([
 
 DogNetV1_age.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Callbacks
-callbacks = [
-    EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
-    ModelCheckpoint(filepath='DogNetV1_age.h5', monitor='val_loss', save_best_only=True, verbose=1),
-    WandbCallback()
-]
-
-
 epochs = 100
 wandb.init(
     project = "DogNet-breed",
@@ -152,7 +144,12 @@ wandb.init(
     name = DogNetV1_age.name
 )
 
-
+# Callbacks
+callbacks = [
+    EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
+    ModelCheckpoint(filepath='DogNetV1_age.h5', monitor='val_loss', save_best_only=True, verbose=1),
+    WandbCallback()
+]
 
 # Train
 start_time = time.time()
