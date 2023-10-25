@@ -16,6 +16,7 @@ GOOGLE_APP_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 GCP_SERVICE_ACCOUNT = '32226619505-compute@developer.gserviceaccount.com'
 
 DATA_PREPROCESSING_IMAGE = "nevilgeorge/eng-ai-preprocessing"
+TENSORIZING_IMAGE = "nevilgeorge/eng-ai-tensorizing"
 AGE_MODEL_TRAINING_IMAGE = "abzp/ac215-age-model-training:abpujare"
 
 
@@ -60,6 +61,41 @@ def main(args=None):
         job = aip.PipelineJob(
             display_name=DISPLAY_NAME,
             template_path="data_preprocessing.yaml",
+            pipeline_root=PIPELINE_ROOT,
+            enable_caching=False,
+        )
+
+        job.run(service_account=GCP_SERVICE_ACCOUNT)
+
+    if args.tensorizing:
+        # Define a Container Component
+        @dsl.container_component
+        def tensorizing_component():
+            container_spec = dsl.ContainerSpec(
+                image=TENSORIZING_IMAGE,
+                command=[],
+                args=[],
+            )
+            return container_spec
+
+        # Define a Pipeline
+        @dsl.pipeline
+        def tensorizing_pipeline():
+            tensorizing_component()
+
+        # Build yaml file for pipeline
+        compiler.Compiler().compile(
+            tensorizing_pipeline, package_path="tensorizing.yaml"
+        )
+
+        # Submit job to Vertex AI
+        aip.init(project=gcp_project_id, staging_bucket=BUCKET_URI)
+
+        job_id = generate_uuid()
+        DISPLAY_NAME = "engai-tensorizing-" + job_id
+        job = aip.PipelineJob(
+            display_name=DISPLAY_NAME,
+            template_path="tensorizing.yaml",
             pipeline_root=PIPELINE_ROOT,
             enable_caching=False,
         )
@@ -113,8 +149,14 @@ if __name__ == "__main__":
         help="Run just the data preprocessing task in the pipeline.",
     )
     parser.add_argument(
+        "-t",
+        "--tensorizing",
+        action="store_true",
+        help="Run just the tensorizing task in the pipeline.",
+    )
+    parser.add_argument(
         "-a",
-        "--age_modeL_training",
+        "--age_model_training",
         action="store_true",
         help="Run just the age model training task in the pipeline.",
     )

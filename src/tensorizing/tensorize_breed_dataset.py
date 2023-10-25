@@ -1,7 +1,6 @@
 ## This script takes the resized images from the GCP bucket
 ## and then tensorizes the data
 from google.cloud import storage
-from torchvision import transforms
 from PIL import Image
 import re
 import tensorflow as tf
@@ -28,9 +27,8 @@ def create_example(image_bytes, label):
     example = tf.train.Example(features=tf.train.Features(feature=feature))
     return example.SerializeToString()
 
-convert_tensor = transforms.ToTensor()
 ## Read resized data from bucket
-client = storage.Client.from_service_account_json('../secrets/data-service-account.json')
+client = storage.Client.from_service_account_json('secrets/data-service-account.json')
 blobs = client.list_blobs(PROCESSED_BUCKET_NAME, prefix=PROCESSED_BUCKET_NAME_PREFIX)
 proc_bucket = client.get_bucket(PROCESSED_BUCKET_NAME)
 
@@ -57,7 +55,7 @@ for blob in blobs:
   local_file_name = 'curr_image' + suffix
   blob.download_to_filename(local_file_name)
   image =Image.open(local_file_name)
-  image_tensor = convert_tensor(image)
+  image_tensor = tf.convert_to_tensor(image)
   img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
   example = create_example(bytes(img), class_int_label)
   destination_blob = tensor_bucket.blob(blob.name)
