@@ -11,6 +11,7 @@ seaborn = "*"
 matplotlib = "*"
 google-cloud-storage = "*"
 wandb = "*"
+tensorflow-model-optimization = "*"
 
 [dev-packages]
 
