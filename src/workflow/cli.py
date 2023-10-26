@@ -33,16 +33,6 @@ def main(args=None):
     gcp_project_id = secrets['project_id']
 
     if args.data_preprocessing:
-        # Define a Container Component
-        @dsl.container_component
-        def data_preprocessing_component():
-            container_spec = dsl.ContainerSpec(
-                image=DATA_PREPROCESSING_IMAGE,
-                command=[],
-                args=[],
-            )
-            return container_spec
-
         # Define a Pipeline
         @dsl.pipeline
         def data_preprocessing_pipeline():
@@ -68,16 +58,6 @@ def main(args=None):
         job.run(service_account=GCP_SERVICE_ACCOUNT)
 
     if args.tensorizing:
-        # Define a Container Component
-        @dsl.container_component
-        def tensorizing_component():
-            container_spec = dsl.ContainerSpec(
-                image=TENSORIZING_IMAGE,
-                command=[],
-                args=[],
-            )
-            return container_spec
-
         # Define a Pipeline
         @dsl.pipeline
         def tensorizing_pipeline():
@@ -103,16 +83,6 @@ def main(args=None):
         job.run(service_account=GCP_SERVICE_ACCOUNT)
     
     if args.age_model_training:
-        # Define a Container Component
-        @dsl.container_component
-        def age_model_training_component():
-            container_spec = dsl.ContainerSpec(
-                image=AGE_MODEL_TRAINING_IMAGE,
-                command=[],
-                args=[],
-            )
-            return container_spec
-
         # Define a Pipeline
         @dsl.pipeline
         def age_model_training_pipeline():
@@ -136,6 +106,64 @@ def main(args=None):
         )
 
         job.run(service_account=GCP_SERVICE_ACCOUNT)
+    
+    if args.pipeline:
+        # Define a Pipeline
+        @dsl.pipeline
+        def ml_pipeline():
+            preprocessing_task = data_preprocessing_component().set_display_name('Data Preprocessing')
+            tensorizing_task = (
+                tensorizing_component()
+                .set_display_name('Tensorizing')
+                .after(preprocessing_task)
+            )
+            age_model_training_task = (
+                age_model_training_component()
+                .set_display_name('Model Training')
+                .after(tensorizing_task)
+            )
+        
+        compiler.Compiler().compile(ml_pipeline, package_path='pipeline.yaml')
+        
+        # Submit job to Vertex AI
+        aip.init(project=gcp_project_id, staging_bucket=BUCKET_URI)
+        job_id = generate_uuid()
+        display_name = "engai-ml-pipeline-" + job_id
+        job = aip.PipelineJob(
+            display_name=display_name,
+            template_path="pipeline.yaml",
+            pipeline_root=PIPELINE_ROOT,
+            enable_caching=False,
+        )
+        job.run(service_account=GCP_SERVICE_ACCOUNT)
+
+
+@dsl.container_component
+def data_preprocessing_component():
+    container_spec = dsl.ContainerSpec(
+        image=DATA_PREPROCESSING_IMAGE,
+        command=[],
+        args=[],
+    )
+    return container_spec
+
+@dsl.container_component
+def tensorizing_component():
+    container_spec = dsl.ContainerSpec(
+        image=TENSORIZING_IMAGE,
+        command=[],
+        args=[],
+    )
+    return container_spec
+
+@dsl.container_component
+def age_model_training_component():
+    container_spec = dsl.ContainerSpec(
+        image=AGE_MODEL_TRAINING_IMAGE,
+        command=[],
+        args=[],
+    )
+    return container_spec
 
 if __name__ == "__main__":
     # Generate the inputs arguments parser
