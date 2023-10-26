@@ -16,7 +16,7 @@ GOOGLE_APP_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 GCP_SERVICE_ACCOUNT = '32226619505-compute@developer.gserviceaccount.com'
 
 DATA_PREPROCESSING_IMAGE = "nevilgeorge/eng-ai-preprocessing"
-TENSORIZING_IMAGE = "nevilgeorge/eng-ai-tensorizing"
+TENSORIZING_IMAGE = "abzp/eng-ai-tensorizing:abpujare"
 AGE_MODEL_TRAINING_IMAGE = "abzp/ac215-age-model-training:abpujare"
 
 

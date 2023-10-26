@@ -1,10 +1,6 @@
-## This script takes the resized images from the GCP bucket
-## and then tensorizes the data
-
 from google.cloud import storage
-from PIL import Image
-import re
 import tensorflow as tf
+import os
 
 
 PROCESSED_BUCKET_NAME="team-engai-dogs-processed"
@@ -16,7 +12,7 @@ TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
 def create_tensorized_file(image_bytes, label):
     # Create a dictionary with the image data and label
     feature = {
-        'image': tf.train.Feature(bytes_list=tf.train.BytesList(value=[image_bytes])),
+        'image': tf.train.Feature(bytes_list=tf.train.BytesList(value=[image.numpy().tobytes()])),
         'height':tf.train.Feature(int64_list=tf.train.Int64List(value=[224])),
         'width':tf.train.Feature(int64_list=tf.train.Int64List(value=[224])),
         'channel':tf.train.Feature(int64_list=tf.train.Int64List(value=[3])),
@@ -35,31 +31,52 @@ tensor_bucket = client.get_bucket(TENSORIZED_BUCKET_NAME)
 blobs = list(blobs)
 
 print(f'Found {len(blobs)} blobs to tensorize!')
-## Tensorize the data and push it to a new GCP bucket
+age_to_int = {}
+count = 0
+photo_count = 0
+curr_age = ''
+
+if not os.path.isdir('age_images'):
+    os.mkdir('age_images')
+
+curr_path = 'age_images/local_image' + str(photo_count)
+last_class_int_label = 0
+class_int_label = 0
 for blob in blobs:
+  path = os.path.dirname(blob.name)
+  age_name = os.path.basename(path)
 
-    if re.search(r"Adult", blob.name):
-        print("Adult")
-        class_label = 1
-    elif re.search(r"Senior", blob.name):
-        print("Senior")
-        class_label = 2
-    elif re.search(r"Young", blob.name):
-        print("Young")
-        class_label = 3
-    if (not blob.name.endswith("/")):
-        if re.search(r"png", blob.name):
-            suffix = '.png'
-        else:
-            suffix = '.jpg'
-        file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_label) + suffix
-        local_file_name = 'curr_image' + suffix
-        blob.download_to_filename(local_file_name)
-        image = Image.open(local_file_name)
-        image_tensor = tf.convert_to_tensor(image)
-        img = tf.image.convert_image_dtype(image_tensor, dtype=tf.uint8)
-        example = create_tensorized_file(bytes(img), class_label)
-        destination_blob = tensor_bucket.blob(blob.name)
-        destination_blob.upload_from_string(example)
 
-print('Tensorizing complete!')
+  if (photo_count % 32 == 0 or last_class_int_label != class_int_label) and photo_count > 0 :
+    destination_blob = tensor_bucket.blob(path+'/local_image' + str(photo_count))
+    with open(curr_path, 'rb') as f:
+      print("uploading :" + curr_path)
+      destination_blob.upload_from_file(f)
+    curr_path = 'age_images/local_image' + str(photo_count)
+
+
+  if age_name == 'Adult':
+    class_int_label = 0
+  elif age_name == 'Senior':
+    class_int_label = 1
+  else:
+    class_int_label = 2
+
+  last_class_int_label = class_int_label
+  file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_int_label)
+  local_file_name = 'curr_image'
+  blob.download_to_filename(local_file_name)
+  image = tf.io.read_file(local_file_name)
+  image = tf.image.decode_jpeg(image, channels=3)
+  image = tf.cast(image, tf.uint8)
+  example = create_tensorized_file(image, class_int_label)
+
+  with tf.io.TFRecordWriter(curr_path) as writer:
+    writer.write(example)
+  photo_count += 1
+
+destination_blob = tensor_bucket.blob('local_image' + str(photo_count))
+file_contents = tf.io.read_file(curr_path)
+destination_blob.upload_from_string(file_contents)
+
+print('Age dataset tensorizing complete!')
