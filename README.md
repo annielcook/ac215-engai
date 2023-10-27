@@ -49,6 +49,11 @@ Under the workflow directory, you can find:
 
 Looking ahead, we hope to scrape images of dogs from google images and run them on this data pipeline to refine our models. 
 
+**Model Optimization**
+Initially we optimized the model using pruning, with Tensorflow's model optimization library. We used a a polinomial decay sparsity scheduler, to increase the sparsity between epochs, from 0.5 to 0.8. We were able to maintain the same validation accuracy through this method. However, this optimization technique was not optimal for a transfer learning model, because we were only pruning the last two dense layers of the model, while the bulk of parameters was concentrated in ResNet152v2.
+
+With this realization we implemented distillation in order to reduce model size. (will finish writing once distillation is working)
+
 
 
 **Datasets**
