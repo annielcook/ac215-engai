@@ -23,7 +23,7 @@ Project Organization
 
 
 --------
-# AC215 - Milestone 3 - DogWatcher (powered by DogNet)
+# AC215 - Milestone 4 - DogWatcher (powered by DogNet)
 
 **Team Members**
 Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
@@ -34,15 +34,24 @@ EngAi Group
 **Project**
 In this project, we aim to build an application that can predict a dog's breed and age using a photo.  
 
-### Milestone 3 ###
+### Milestone 4 ###
 
-In this milestone, we extended the pipeline with 3 main changes:
-   (1) Update datasets since we changed our idea from Milestone 2
-   (2) Converted our data from images (.jpg, .png) to TFRecords
-   (3) Trained a first iteration of our model using TensorFlow and the existing ResNet model.
+In this milestone, we worked on three aspects of the project: 
+   (1) Distillation and pruning to optimize the model for size and performance
+   (2) Running all the containers in the vertex ai service to get the end to end data pipeline set up. 
 
-We gathered 2 datasets from the following sources:
 
+**Machine Learning Workflow Using Kubeflow and Vertex**
+Under the workflow directory, you can find: 
+
+ - cli.py - this script  calls the vertex ai service to run the preprocessing, tensorizing and model training containers in a sequential data pipeline. Currently, we have used this data pipeline to preprocess, tensorize, and run the models on the kaggle datasets we have collected.
+ - .yaml files -  You can see that we used the kubeflow dsl annotations in cli.py to specify the different components of the pipeline that ultimately get composed into a yaml file. The data_preprocessing.yaml file has been included as a reference in this repository.  
+
+Looking ahead, we hope to scrape images of dogs from google images and run them on this data pipeline to refine our models. 
+
+
+
+**Datasets**
 Kaggle Stanford Dogs - https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset
  - A dataset of dog pictures with their breeds.
 
