@@ -30,7 +30,10 @@ EPOCHS = 100
 MODEL_NAME = "DogNetV1"
 NUM_CLASSES = 80
 BATCH_SIZE = 32
-NUM_IMAGES = 68449
+NUM_IMAGES = 68449    
+IMAGE_HEIGHT = 224
+IMAGE_WIDTH = 224
+NUM_CHANNELS = 3
 
 
 def get_blobs():
@@ -58,11 +61,6 @@ def split_data():
 
     print("Total files: " + str(n_files))
 
-    # Data parsing variables
-    num_channels = 3
-    image_height = 224
-    image_width = 224
-
     # Read the tfrecord files
     tfrecord_files = tf.data.Dataset.list_files("train/*")
     tfrecord_files = tfrecord_files.shuffle(buffer_size=n_files)
@@ -76,18 +74,18 @@ def split_data():
     train_data = get_data(
         train_tfrecord_files,
         batch_size=BATCH_SIZE,
-        num_channels=num_channels,
+        num_channels=NUM_CHANNELS,
         num_classes=NUM_CLASSES,
-        image_height=image_height,
-        image_width=image_width,
+        image_height=IMAGE_HEIGHT,
+        image_width=IMAGE_WIDTH,
     )
     validation_data = get_data(
         validation_tfrecord_files,
         batch_size=BATCH_SIZE,
-        num_channels=num_channels,
+        num_channels=NUM_CHANNELS,
         num_classes=NUM_CLASSES,
-        image_height=image_height,
-        image_width=image_width,
+        image_height=IMAGE_HEIGHT,
+        image_width=IMAGE_WIDTH,
     )
     return train_data, validation_data
 
@@ -97,7 +95,7 @@ def build_and_train_model(train_data, validation_data):
 
     # # Pretrained Model
     base_model = ResNet152V2(
-        include_top=False, input_shape=(224, 224, 3), weights="imagenet"
+        include_top=False, input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, NUM_CHANNELS), weights="imagenet"
     )
     base_model.trainable = False  # Freeze the Weights
 
