@@ -1,7 +1,7 @@
-Team EngAi Milestone 3 Deliverable
+Team EngAi Milestone 4 Deliverable
 ==============================
 
-AC215 - Milestone 3
+AC215 - Milestone 4
 
 Project Organization
 ------------
@@ -14,12 +14,33 @@ Project Organization
       └── src
             ├── preprocessing
             │   ├── Dockerfile
-            │   ├── preprocess.py
-            │   └── requirements.txt
+            │   ├── docker-shell.sh
+            │   ├── docker-entrypoint.sh
+            │   ├── preprocess_age.py
+            │   ├── preprocess_breed.py
+            │   ├── Pipfile   
+            │   └── Pipfile.lock
             └── validation
-                  ├── Dockerfile
-                  ├── cv_val.py
-                  └── requirements.txt
+            │     ├── Dockerfile
+            │     ├── cv_val.py
+            │     └── requirements.txt
+            └── tensorizing
+            │     ├── Dockerfile
+            │     ├── docker-shell.sh
+            │     ├── docker-entrypoint.sh
+            │     ├── tensorize_age_dataset.py
+            │     └── tensorize_breed_dataset.py
+            └── models
+                  └── resnet152v2
+                        ├── Dockerfile
+                        ├── docker-shell.sh
+                        ├── run-model.sh
+                        ├── distiller.py
+                        ├── util.py
+                        ├── model_training_breed_dataset_distillation.py
+                        ├── model_training_breed_dataset_pruning.py
+                        ├── model_training_breed_dataset.py
+                        └── model_training_age_dataset.py
 
 
 --------
@@ -50,9 +71,7 @@ Under the workflow directory, you can find:
 Looking ahead, we hope to scrape images of dogs from google images and run them on this data pipeline to refine our models. 
 
 **Model Optimization**
-Initially we optimized the model using pruning, with Tensorflow's model optimization library. We used a a polinomial decay sparsity scheduler, to increase the sparsity between epochs, from 0.5 to 0.8. We were able to maintain the same validation accuracy through this method. However, this optimization technique was not optimal for a transfer learning model, because we were only pruning the last two dense layers of the model, while the bulk of parameters was concentrated in ResNet152v2.
-
-With this key learning we decided to implement distillation for the next project milestone.
+Initially we optimized the model using pruning, with Tensorflow's model optimization library. We used a a polinomial decay sparsity scheduler, to increase the sparsity between epochs, from 0.5 to 0.8. We were able to maintain the same validation accuracy through this method. However, this optimization technique was not optimal for a transfer learning model, because we were only pruning the last two dense layers of the model, while the bulk of parameters was concentrated in ResNet152v2. With this key learning, we implemented model distillation. This involves taking the training from a teacher model (our trained ResNet152v2 model from above) and applying it to a blank slate student model. With distillation, the result is a model orders of magnitude smaller. The accuracy, however, is lower. For the next milestone we will continue to explore optimizations and their tradeoffs in order to determine the ideal decisions for this implementation. 
 
 **Datasets**
 Kaggle Stanford Dogs - https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset
