@@ -3,9 +3,9 @@ import tensorflow as tf
 import os
 
 
-PROCESSED_BUCKET_NAME="team-engai-dogs-processed"
+PROCESSED_BUCKET_NAME=f"team-engai-dogs-processed{os.getenv('PERSON')}"
 PROCESSED_BUCKET_NAME_PREFIX="dog_age_dataset/Expert_Train/Expert_TrainEval"
-TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
+TENSORIZED_BUCKET_NAME=f"team-engai-dogs-tensorized{os.getenv('PERSON')}"
 
 ## function to take in image bytes and a label for the image and tensorizing
 ## the input

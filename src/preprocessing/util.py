@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
+from google.cloud import storage
 from PIL import Image
 
 
@@ -9,7 +10,7 @@ def to_tensor(image):
     image = tf.image.convert_image_dtype(image, dtype=tf.float32)
     return image
 
-def resize_img(blb, proc_bkt, curr_ext):
+def resize_img_and_save_locally(blb, curr_ext):
     local_image_file = 'curr_image' + curr_ext
     blb.download_to_filename(local_image_file)
     image = Image.open(local_image_file).convert('RGB')
@@ -18,5 +19,19 @@ def resize_img(blb, proc_bkt, curr_ext):
     image_tensors = tf.image.resize(image_tensor, [224, 224], method=tf.image.ResizeMethod.BILINEAR, preserve_aspect_ratio=False)
     img = tf.image.convert_image_dtype(image_tensors[0], dtype=tf.uint8)
     Image.fromarray(np.array(img)).save(local_image_file)
+    return local_image_file
+
+def upload_image_to_bucket(blb, proc_bkt, local_image_file):
     destination_blob = proc_bkt.blob(blb.name)
     destination_blob.upload_from_filename(local_image_file)
+
+
+def make_or_fetch_bucket(bucket_name):
+    client = storage.Client.from_service_account_json(
+        "../../secrets/data-service-account.json"
+    )
+    try:
+        bucket = client.get_bucket(bucket_name)
+    except:
+        bucket = client.create_bucket(bucket_name)
+    return bucket

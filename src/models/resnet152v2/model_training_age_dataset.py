@@ -41,7 +41,7 @@ def make_required_directories():
 
 def split_data():
     # Connect to GCS Bucket
-    TENSORIZED_DATA_BUCKET_NAME = "team-engai-dogs-tensorized"
+    TENSORIZED_DATA_BUCKET_NAME = f"team-engai-dogs-tensorized{os.getenv('PERSON')}"
     client = storage.Client.from_service_account_json(
         "../../secrets/data-service-account.json"
     )

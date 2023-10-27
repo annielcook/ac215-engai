@@ -42,7 +42,7 @@ def normalize(image, label):
   return image, label
 
 # Connect to GCS Bucket
-TENSORIZED_DATA_BUCKET_NAME="team-engai-dogs-tensorized"
+TENSORIZED_DATA_BUCKET_NAME=f"team-engai-dogs-tensorized{os.getenv('PERSON')}"
 client = storage.Client.from_service_account_json('./secrets/data-service-account.json')
 blobs = client.list_blobs(TENSORIZED_DATA_BUCKET_NAME, prefix='dog_breed_dataset/images/Images')
 

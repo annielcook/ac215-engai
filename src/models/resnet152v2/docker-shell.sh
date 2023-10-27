@@ -1,5 +1,25 @@
 #!/bin/bash
 
+usage() { echo "Usage: $0 [-n <string>]" 1>&2; exit 1; }
+
+while getopts ":n:" o; do
+    case "${o}" in
+        n)
+            n=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${n}" ] ; then
+    usage
+fi
+
+echo "n = ${n}"
+
 set -e
 
 export BASE_DIR=$(pwd)
@@ -7,6 +27,7 @@ export SECRETS_DIR=$(pwd)/../../secrets/
 export GCS_BUCKET_NAME="team-engai"
 export GCP_PROJECT="AC215Project"
 export GCP_ZONE="northamerica-northeast2"
+export PERSON=${n}
 
 # Create the network if we don't have it yet
 docker network inspect data-versioning-network  >/dev/null 2>&1 || docker network create data-versioning-network 
@@ -23,8 +44,7 @@ docker run --rm --name model-training -ti \
 -e GCP_PROJECT=$GCP_PROJECT \
 -e GCP_ZONE=$GCP_ZONE \
 -e GCS_BUCKET_NAME=$GCS_BUCKET_NAME \
+-e PERSON=$PERSON \
 --network data-versioning-network  model-training
 
-# Below replaced by `mount` above.
-# -v "$BASE_DIR":/app \
-# -v "$SECRETS_DIR":/secrets \
+echo $PERSON
