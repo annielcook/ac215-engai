@@ -9,7 +9,7 @@ TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
 
 ## function to take in image bytes and a label for the image and tensorizing
 ## the input
-def create_tensorized_file(image_bytes, label):
+def create_tensorized_file(image, label):
     # Create a dictionary with the image data and label
     feature = {
         'image': tf.train.Feature(bytes_list=tf.train.BytesList(value=[image.numpy().tobytes()])),
@@ -42,19 +42,23 @@ if not os.path.isdir('age_images'):
 curr_path = 'age_images/local_image' + str(photo_count)
 last_class_int_label = 0
 class_int_label = 0
+writer = tf.io.TFRecordWriter(curr_path)
 for blob in blobs:
   path = os.path.dirname(blob.name)
   age_name = os.path.basename(path)
 
-
+  ## if number of photos in current file is 32 or class (age) has changed
+  ## write current file and initialize new batch
   if (photo_count % 32 == 0 or last_class_int_label != class_int_label) and photo_count > 0 :
-    destination_blob = tensor_bucket.blob(path+'/local_image' + str(photo_count))
+    destination_blob = tensor_bucket.blob(path+'/tensorized_image_batch_file_' + str(photo_count))
+    writer.close()
     with open(curr_path, 'rb') as f:
       print("uploading :" + curr_path)
       destination_blob.upload_from_file(f)
     curr_path = 'age_images/local_image' + str(photo_count)
+    writer = tf.io.TFRecordWriter(curr_path)
 
-
+  ## find class label
   if age_name == 'Adult':
     class_int_label = 0
   elif age_name == 'Senior':
@@ -62,6 +66,7 @@ for blob in blobs:
   else:
     class_int_label = 2
 
+  ## download file locally, tensorize and place in tensorize batch file
   last_class_int_label = class_int_label
   file_name = blob.name.split('/')[-1].split('.')[0] + "_processed_" + str(class_int_label)
   local_file_name = 'curr_image'
@@ -71,8 +76,7 @@ for blob in blobs:
   image = tf.cast(image, tf.uint8)
   example = create_tensorized_file(image, class_int_label)
 
-  with tf.io.TFRecordWriter(curr_path) as writer:
-    writer.write(example)
+  writer.write(example)
   photo_count += 1
 
 destination_blob = tensor_bucket.blob('local_image' + str(photo_count))
