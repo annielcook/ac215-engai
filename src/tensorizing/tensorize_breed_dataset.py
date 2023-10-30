@@ -3,9 +3,9 @@ import re
 import tensorflow as tf
 import os
 
-PROCESSED_BUCKET_NAME="team-engai-dogs-processed"
+PROCESSED_BUCKET_NAME=f"team-engai-dogs-processed{os.getenv('PERSON')}"
 PROCESSED_BUCKET_NAME_PREFIX="dog_breed_dataset/images/Images"
-TENSORIZED_BUCKET_NAME="team-engai-dogs-tensorized"
+TENSORIZED_BUCKET_NAME=f"team-engai-dogs-tensorized{os.getenv('PERSON')}"
 
 def create_tensorized_file(image, label):
     # Create a dictionary with the image data and label

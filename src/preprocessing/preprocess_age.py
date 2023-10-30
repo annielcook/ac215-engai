@@ -1,8 +1,9 @@
 import re
+import os
 
 from google.cloud import storage
 
-from util import resize_img
+from util import resize_img_and_save_locally
 
 
 RAW_AGE_NAME="team-engai-dogs"
@@ -10,7 +11,7 @@ RAW_AGE_PREF="dog_age_dataset/Expert_Train/Expert_TrainEval"
 client = storage.Client.from_service_account_json('secrets/data-service-account.json')
 blobs_age = client.list_blobs(RAW_AGE_NAME, prefix=RAW_AGE_PREF)
 
-PROC_AGE_NAME="team-engai-dogs-processed"
+PROC_AGE_NAME=f"team-engai-dogs-processed{os.getenv('PERSON')}"
 proc_age = client.get_bucket(PROC_AGE_NAME)
 
 blobs_age = list(blobs_age)
@@ -33,7 +34,7 @@ for blob in blobs_age:
         if blob.name.endswith('png'):
             curr_ext = '.png'
         file_name = blob.name.split('/')[-1].split('.')[0] + "_" + label + curr_ext
-        resize_img(blob, proc_age, curr_ext)
+        resize_img_and_save_locally(blob, proc_age, curr_ext)
   except Exception as e:
     print("got exception: " + str(e))
     continue
