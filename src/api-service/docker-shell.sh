@@ -2,7 +2,7 @@
 
 set -e
 
-export IMAGE_NAME="api-service"
+export IMAGE_NAME="engai-api-service"
 export BASE_DIR=$(pwd)
 export SECRETS_DIR=$(pwd)/../secrets/
 export GCS_BUCKET_NAME="team-engai"
