@@ -83,7 +83,8 @@ for blob in blobs:
 
 writer.close()
 destination_blob = tensor_bucket.blob('local_image' + str(photo_count))
-file_contents = tf.io.read_file(curr_path)
-destination_blob.upload_from_string(file_contents)
+with open(curr_path, 'rb') as f:
+    print("uploading :" + curr_path)
+    destination_blob.upload_from_file(f)
 
 print('Breed dataset tensorizing complete!')
