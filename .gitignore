@@ -130,10 +130,11 @@ dmypy.json
 
 # Secrets
 src/secrets/
-src/workflow/secrets/
-src/preprocessing/secrets/
-src/tensorizing/secrets/
 
 # data
 team-engai-dogs/
 /team-engai-dogs
+
+
+# Any .env file
+*.env

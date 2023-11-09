@@ -1,0 +1,5 @@
+# Secrets
+src/secrets/
+
+# Any .env file
+*.env
