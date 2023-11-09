@@ -8,6 +8,9 @@ export GCS_BUCKET_NAME="team-engai"
 export GCP_PROJECT="AC215Project"
 export GCP_ZONE="northamerica-northeast2"
 
+# Load environment variables
+source .env
+
 # Create the network if we don't have it yet
 docker network inspect data-versioning-network  >/dev/null 2>&1 || docker network create data-versioning-network 
 
@@ -23,6 +26,7 @@ docker run --rm --name model-training -ti \
 -e GCP_PROJECT=$GCP_PROJECT \
 -e GCP_ZONE=$GCP_ZONE \
 -e GCS_BUCKET_NAME=$GCS_BUCKET_NAME \
+-e WANDB_KEY=$WANDB_KEY \
 --network data-versioning-network  model-training
 
 # Below replaced by `mount` above.
