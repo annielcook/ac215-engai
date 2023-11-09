@@ -8,8 +8,8 @@ export GCS_BUCKET_NAME="team-engai"
 export GCP_PROJECT="AC215Project"
 export GCP_ZONE="northamerica-northeast2"
 
-# Load environment variables
-source .env
+# Load environment variables from single .env file in top level directory
+source ../../../.env
 
 # Create the network if we don't have it yet
 docker network inspect data-versioning-network  >/dev/null 2>&1 || docker network create data-versioning-network 
