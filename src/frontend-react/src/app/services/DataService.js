@@ -1,5 +1,5 @@
 const axios = require('axios');
-const API_SERVICE_BASE_URL = process.env.API_SERVICE_BASE_URL
+const API_SERVICE_BASE_URL = process.env.REACT_APP_API_SERVICE_BASE_URL
 
 const DataService = {
     // Predict sends a POST request to the api-service to receive a prediction result.
