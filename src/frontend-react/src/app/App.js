@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageUpload from './ImageUpload.js'
 import {
   ThemeProvider,
   CssBaseline
@@ -15,6 +16,7 @@ const App = (props) => {
     <React.Fragment>
       <CssBaseline />
         <h1>DawgAI</h1>
+        <ImageUpload></ImageUpload>
     </React.Fragment>
   )
 
