@@ -17,7 +17,7 @@ deploymentSpec:
         image: nevilgeorge/eng-ai-preprocessing
     exec-tensorizing-component:
       container:
-        image: nevilgeorge/eng-ai-tensorizing
+        image: abzp/eng-ai-tensorizing:abpujare
 pipelineInfo:
   name: ml-pipeline
 root:
