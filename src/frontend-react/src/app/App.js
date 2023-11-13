@@ -16,6 +16,7 @@ const App = (props) => {
     <React.Fragment>
       <CssBaseline />
         <h1>DawgAI</h1>
+        <p1>Upload an image below to get started</p1>
         <ImageUpload></ImageUpload>
     </React.Fragment>
   )
