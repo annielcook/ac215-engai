@@ -1,9 +1,11 @@
 # service.py
 
+import json
 import os
 from fastapi import FastAPI, File, Form
 from starlette.middleware.cors import CORSMiddleware
 from tempfile import TemporaryDirectory
+from .model import ModelController
 
 app = FastAPI(title='EngAI API Server', description='API Server', version='v1')
 
@@ -19,6 +21,15 @@ app.add_middleware(
 @app.on_event('startup')
 async def startup():
     print('Server starting up...')
+    with open('config/model-controller-config.json', 'r') as f:
+        model_config = json.load(f)
+    with open('config/index-to-breed.json', 'r') as f:
+        index_to_breed_map = json.load(f)
+
+    global model_controller
+    model_controller = ModelController(model_config, index_to_breed_map)
+
+
 
 # Routes
 @app.get('/')
@@ -29,10 +40,7 @@ async def get_index():
 async def predict(image: bytes = File(...), file_type: str = Form(...)):
     print("image:", len(image), type(image))
     print("image type:", file_type)
-
-    with TemporaryDirectory() as image_dir:
-        image_path = os.path.join(image_dir, f'predict_image.{file_type}')
-        with open(image_path, "wb") as output:
-            output.write(image)
-
-    return {'image_path': image_path}
+    
+    response = model_controller.predict(image)
+    print(response)
+    return response
