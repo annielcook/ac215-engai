@@ -134,7 +134,8 @@ src/secrets/
 # data
 team-engai-dogs/
 /team-engai-dogs
-
+src/api-service/artifacts/
+src/api-service/wandb/
 
 # Any .env file
 *.env

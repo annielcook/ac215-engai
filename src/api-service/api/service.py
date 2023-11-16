@@ -25,9 +25,13 @@ async def startup():
         model_config = json.load(f)
     with open('config/index-to-breed.json', 'r') as f:
         index_to_breed_map = json.load(f)
+    with open('../secrets/wandb.json', 'r') as f:
+        wandb_key = json.load(f)['wandb_key']
 
     global model_controller
     model_controller = ModelController(model_config, index_to_breed_map)
+    if model_config['use_local_model']:
+        model_controller.download_model_from_wandb(wandb_key)
 
 
 

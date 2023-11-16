@@ -2,5 +2,7 @@
     "project_id": "32226619505",
     "location": "us-central1",
     "endpoint_id": "6394181284029005824",
-    "model_id": "4385650617012453376"
+    "model_id": "4385650617012453376",
+    "wandb_model_name": "engai/DogNet-breed/model-DogNetV1-breed:latest",
+    "use_local_model": false
 }

@@ -12,6 +12,8 @@ pandas = "*"
 google-cloud-storage = "*"
 google-cloud-aiplatform = "*"
 python-multipart = "*"
+wandb = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.8"
