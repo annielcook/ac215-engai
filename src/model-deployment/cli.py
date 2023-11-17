@@ -26,37 +26,6 @@ GCS_MODELS_BUCKET_NAME = os.environ["GCS_MODELS_BUCKET_NAME"]
 BEST_MODEL = "engai/DogNet-breed/model-DogNetV1-breed:latest"
 ARTIFACT_URI = f"gs://{GCS_MODELS_BUCKET_NAME}/{BEST_MODEL}"
 
-# data_details = {
-#     "image_width": 224,
-#     "image_height": 224,
-#     "num_channels": 3,
-#     "num_classes": 3,
-#     "labels": ["oyster", "crimini", "amanita"],
-#     "label2index": {"oyster": 0, "crimini": 1, "amanita": 2},
-#     "index2label": {0: "oyster", 1: "crimini", 2: "amanita"},
-# }
-
-
-def download_file(packet_url, base_path="", extract=False, headers=None):
-    if base_path != "":
-        if not os.path.exists(base_path):
-            os.mkdir(base_path)
-    packet_file = os.path.basename(packet_url)
-    with requests.get(packet_url, stream=True, headers=headers) as r:
-        r.raise_for_status()
-        with open(os.path.join(base_path, packet_file), "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-
-    if extract:
-        if packet_file.endswith(".zip"):
-            with zipfile.ZipFile(os.path.join(base_path, packet_file)) as zfile:
-                zfile.extractall(base_path)
-        else:
-            packet_name = packet_file.split(".")[0]
-            with tarfile.open(os.path.join(base_path, packet_file)) as tfile:
-                tfile.extractall(base_path)
-
 
 def main(args=None):
     if args.upload:
@@ -143,40 +112,6 @@ def main(args=None):
         )
         print("endpoint:", endpoint)
 
-    elif args.predict:
-        print("Predict using endpoint")
-
-        # # Get the endpoint
-        # # Endpoint format: endpoint_name="projects/{PROJECT_NUMBER}/locations/us-central1/endpoints/{ENDPOINT_ID}"
-        # endpoint = aiplatform.Endpoint(
-        #     "projects/129349313346/locations/us-central1/endpoints/5072058134046965760"
-        # )
-
-        # # Get a sample image to predict
-        # image_files = glob(os.path.join("data", "*.jpg"))
-        # print("image_files:", image_files[:5])
-
-        # image_samples = np.random.randint(0, high=len(image_files) - 1, size=5)
-        # for img_idx in image_samples:
-        #     print("Image:", image_files[img_idx])
-
-        #     with open(image_files[img_idx], "rb") as f:
-        #         data = f.read()
-        #     b64str = base64.b64encode(data).decode("utf-8")
-        #     # The format of each instance should conform to the deployed model's prediction input schema.
-        #     instances = [{"bytes_inputs": {"b64": b64str}}]
-
-        #     result = endpoint.predict(instances=instances)
-
-        #     print("Result:", result)
-        #     prediction = result.predictions[0]
-        #     print(prediction, prediction.index(max(prediction)))
-        #     print(
-        #         "Label:   ",
-        #         data_details["index2label"][prediction.index(max(prediction))],
-        #         "\n",
-        #     )
-
 
 if __name__ == "__main__":
     # Generate the inputs arguments parser
@@ -194,12 +129,6 @@ if __name__ == "__main__":
         "--deploy",
         action="store_true",
         help="Deploy saved model to Vertex AI",
-    )
-    parser.add_argument(
-        "-p",
-        "--predict",
-        action="store_true",
-        help="Make prediction using the endpoint from Vertex AI",
     )
     parser.add_argument(
         "-t",

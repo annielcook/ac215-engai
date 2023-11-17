@@ -5,6 +5,8 @@ components:
     executorLabel: exec-age-model-training-component
   comp-data-preprocessing-component:
     executorLabel: exec-data-preprocessing-component
+  comp-model-deployment-component:
+    executorLabel: exec-model-deployment-component
   comp-tensorizing-component:
     executorLabel: exec-tensorizing-component
 deploymentSpec:
@@ -15,6 +17,9 @@ deploymentSpec:
     exec-data-preprocessing-component:
       container:
         image: nevilgeorge/eng-ai-preprocessing
+    exec-model-deployment-component:
+      container:
+        image: annielcook/engai-model-deployment:1115v1
     exec-tensorizing-component:
       container:
         image: abzp/eng-ai-tensorizing:abpujare
@@ -39,6 +44,15 @@ root:
           name: comp-data-preprocessing-component
         taskInfo:
           name: Data Preprocessing
+      model-deployment-component:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-model-deployment-component
+        dependentTasks:
+        - age-model-training-component
+        taskInfo:
+          name: Model Deployment
       tensorizing-component:
         cachingOptions:
           enableCache: true
