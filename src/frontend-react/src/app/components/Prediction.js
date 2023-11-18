@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DataService from './services/DataService';
+import DataService from '../services/DataService';
 import ImageUpload from './ImageUpload';
 
 // const Prediction = () => {

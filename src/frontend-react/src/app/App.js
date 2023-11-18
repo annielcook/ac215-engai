@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageUpload from './ImageUpload.js'
+import ImageUpload from './components/ImageUpload.js'
 import {
   ThemeProvider,
   CssBaseline
@@ -15,8 +15,9 @@ const App = (props) => {
   let view = (
     <React.Fragment>
       <CssBaseline />
+        {/* <ModelToggle></ModelToggle> */}
         <h1>DawgAI</h1>
-        <p1>Upload an image below to get started</p1>
+        <p1>Please select the model type and upload an image:</p1>
         <ImageUpload></ImageUpload>
     </React.Fragment>
   )
