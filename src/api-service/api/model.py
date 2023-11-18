@@ -21,7 +21,6 @@ class ModelController(object):
     def __init__(self, model_config, index_to_breed_map) -> None:
         self.use_self_hosted_model = False
         self.project_id = model_config['project_id']
-        self.model_id = model_config['model_id']
         self.endpoint_id = model_config['endpoint_id']
         self.location = model_config['location']
         self.wandb_model_name = model_config['wandb_model_name']
