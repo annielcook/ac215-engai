@@ -26,16 +26,17 @@ class ModelController(object):
         self.location = model_config['location']
         self.wandb_model_name = model_config['wandb_model_name']
         # Defines whether you should use a locally stored model or call VertexAI.
-        self.use_local_model = model_config['use_local_model']
+        self.load_local_model = model_config['load_local_model']
         self.index_to_breed_map = index_to_breed_map
         self.local_prediction_model = None
         
         # Initialize an AI Platform client
         aiplatform.init(project=self.project_id, location=self.location)
     
-    def predict(self, image: bytes) -> dict:
+    def predict(self, image: bytes, use_local_model: bool) -> dict:
         """Makes a model prediction request."""
-        if self.use_local_model and self.local_prediction_model:
+        # Use the local model if it's loaded and the request asks for it.
+        if self.load_local_model and self.local_prediction_model and use_local_model:
             return self._predict_local(image)
         else:
             return self._predict_remote(image)
@@ -59,6 +60,7 @@ class ModelController(object):
             'max_probability': max_probability,
             'max_probability_index': max_probability_index,
             'predicted_breed': predicted_breed,
+            'local_model_used': False,
         }
 
     def _predict_local(self, image: bytes) -> dict:
@@ -73,6 +75,7 @@ class ModelController(object):
             'max_probability': max_probability,
             'max_probability_index': max_probability_index,
             'predicted_breed': predicted_breed,
+            'local_model_used': True,
         }
     
     def download_model_from_wandb(self, wandb_key: str):

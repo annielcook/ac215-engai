@@ -38,11 +38,14 @@ const ImageUpload = () => {
           setSelectedImage(null);
           return;
       }
+      // Use the local model if set, default to remote model.
+      const useLocalModel = selectedModel === 'local-model';
       const formData = new FormData();
       formData.append('image', selectedImage);
       formData.append('file_type', fileType);
+      formData.append('use_local_model', useLocalModel);
 
-      DataService.Predict(formData, selectedModel)
+      DataService.Predict(formData)
           .then(function(response) {
             console.log(response.data.predicted_breed);
             console.log(response.data.max_probability);

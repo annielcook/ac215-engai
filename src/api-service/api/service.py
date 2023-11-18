@@ -30,7 +30,7 @@ async def startup():
 
     global model_controller
     model_controller = ModelController(model_config, index_to_breed_map)
-    if model_config['use_local_model']:
+    if model_config['load_local_model']:
         model_controller.download_model_from_wandb(wandb_key)
 
 
@@ -41,10 +41,10 @@ async def get_index():
     return {'message': 'This is the EngAI API service.'}
 
 @app.post('/predict')
-async def predict(image: bytes = File(...), file_type: str = Form(...)):
-    print("image:", len(image), type(image))
+async def predict(image: bytes = File(...), file_type: str = Form(...), use_local_model = Form(...)):
     print("image type:", file_type)
+    print('use_local_model: ', use_local_model)
     
-    response = model_controller.predict(image)
+    response = model_controller.predict(image, use_local_model)
     print(response)
     return response
