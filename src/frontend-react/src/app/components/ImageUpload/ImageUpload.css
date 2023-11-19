@@ -1,0 +1,75 @@
+body {
+    align-items: center;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.upload-container p {
+  margin: 5px;
+  padding: 5px;
+}
+
+.site-button {
+    background-color: #402a23;
+    border-radius: 100px;
+    height: 30px;
+    position: relative;
+    width: 200px;
+    color: #ffffff;
+    font-family: "Roboto-Bold", Helvetica;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+  
+.site-button:hover {
+    background-color: #bf788b;
+    /* left: 28px;
+    top: 10px; */
+    /* width: 163px; */
+}
+
+.uploaded-img {
+    max-width: 400px;
+}
+
+/* Custom File Upload Label Styles */
+/* .custom-file-upload-label {
+  background-color: #402a23;
+  align-items: center;
+  border-radius: 100px;
+  height: 30px;
+  position: relative;
+  width: 200px;
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+} */
+
+.custom-file-upload-label:hover {
+  background-color: #bf788b /* Darker brown on hover */
+}
+
+/* File Upload Input Styles */
+.custom-file-upload-input {
+  display: none; /* Hide the default file input button */
+}
+
+@media (max-width: 768px) {
+  .uploaded-img {
+    max-width: 250px;
+  }
+}
