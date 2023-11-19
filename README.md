@@ -164,16 +164,51 @@ In this project, we aim to build an application that can predict a dog's breed a
 ### Milestone 5 ###
 
 In this milestone we worked on multiple aspects of the project:
+
       (1) Deployment of the web service to GCP
+      
       (2) Frontend/React container 
+      
       (3) API service 
 
-** Deployment Strategy **
+#### Deployment Strategy ####
 
-We used Ansible to automate the provisioning and deployment of our frontend and backend containers to GCP. Below you can find a screenshot of the VM that's running our service on GCP. Additionally, you can find a screenshot that shows the container images we have pused to the GCP container repository. 
+We used Ansible to automate the provisioning and deployment of our frontend and backend containers to GCP. Below you can find a screenshot of the VM that's running our service on GCP.  
+
+![image](https://github.com/annielcook/ac215-engai/assets/1981839/4ee0bf8d-4467-405a-ba66-ce5a847649d5)
+
+Additionally, you can find a screenshot that shows the container images we have pused to the GCP container repository:
+
+![image](https://github.com/annielcook/ac215-engai/assets/1981839/a370ecfd-0201-4eb0-986e-59542450d601)
 
 
+**Deployment Container**
 
+This container builds the containers, creates and provisions a GCP instance and then deploys those containers to those intances.
+
+If you wish to run the container locally :
+
+* Navigate to  src/deployment in your terminal
+* Run sh docker-shell.sh
+* Build and Push Docker Containers to GCR (Google Container Registry) by running the following yaml"
+
+`ansible-playbook deploy-docker-images.yml -i inventory.yml`
+
+* Create Compute Instance (VM) Server which will host the containers
+
+`ansible-playbook deploy-create-instance.yml -i inventory.yml --extra-vars cluster_state=present`
+
+* Provision Compute Instance in GCP to setup all required software
+
+`ansible-playbook deploy-provision-instance.yml -i inventory.yml`
+
+* Install Docker Containers on the Compute Instance
+
+`ansible-playbook deploy-setup-containers.yml -i inventory.yml`
+
+* Setup Webserver on the Instance
+
+`ansible-playbook deploy-setup-webserver.yml -i inventory.yml`
 
 --------
 # AC215 - Milestone 4 - DogWatcher (powered by DogNet)
