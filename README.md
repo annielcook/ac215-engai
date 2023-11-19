@@ -1,46 +1,176 @@
-Team EngAi Milestone 4 Deliverable
+Team EngAi Milestone 5 Deliverable
 ==============================
 
-AC215 - Milestone 4
+AC215 - Milestone 5
 
 Project Organization
 ------------
-      ├── LICENSE
-      ├── README.md
-      ├── notebooks
-      ├── references
-      ├── requirements.txt
-      ├── setup.py
-      └── src
-            ├── preprocessing
-            │   ├── Dockerfile
-            │   ├── docker-shell.sh
-            │   ├── docker-entrypoint.sh
-            │   ├── preprocess_age.py
-            │   ├── preprocess_breed.py
-            │   ├── Pipfile   
-            │   └── Pipfile.lock
-            └── validation
-            │     ├── Dockerfile
-            │     ├── cv_val.py
-            │     └── requirements.txt
-            └── tensorizing
-            │     ├── Dockerfile
-            │     ├── docker-shell.sh
-            │     ├── docker-entrypoint.sh
-            │     ├── tensorize_age_dataset.py
-            │     └── tensorize_breed_dataset.py
-            └── models
-                  └── resnet152v2
-                        ├── Dockerfile
-                        ├── docker-shell.sh
-                        ├── run-model.sh
-                        ├── distiller.py
-                        ├── util.py
-                        ├── model_training_breed_dataset_distillation.py
-                        ├── model_training_breed_dataset_pruning.py
-                        ├── model_training_breed_dataset.py
-                        └── model_training_age_dataset.py
+    ├── LICENSE
+├── README.md
+├── notebooks
+│   ├── ExploratoryDataAnalysis.ipynb
+│   ├── breed_labels.txt
+│   └── model_testing.ipynb
+├── requirements.txt
+└── src
+    ├── api-service
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── api
+    │   │   ├── model.py
+    │   │   └── service.py
+    │   ├── config
+    │   │   ├── breed-to-index.json
+    │   │   ├── index-to-breed.json
+    │   │   ├── model-controller-config.json
+    │   │   └── util.py
+    │   ├── docker-entrypoint.sh
+    │   ├── docker-shell.sh
+    │   └── secrets
+    │       └── wandb.json
+    ├── deployment
+    │   ├── Dockerfile
+    │   ├── deploy-create-instance.yml
+    │   ├── deploy-docker-images.yml
+    │   ├── deploy-provision-instance.yml
+    │   ├── deploy-setup-containers.yml
+    │   ├── deploy-setup-webserver.yml
+    │   ├── docker-entrypoint.sh
+    │   ├── docker-shell.sh
+    │   ├── inventory.yml
+    │   ├── loginProfile
+    │   ├── nginx-conf
+    │   │   └── nginx
+    │   │       └── nginx.conf
+    │   └── secrets
+    │       ├── deployment.json
+    │       ├── gcp-service.json
+    │       ├── ssh-key-deployment
+    │       └── ssh-key-deployment.pub
+    ├── dvc
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── docker-shell.sh
+    │   └── team-engai-dogs.dvc
+    ├── frontend-react
+    │   ├── Dockerfile
+    │   ├── Dockerfile.dev
+    │   ├── docker-shell.sh
+    │   ├── package.json
+    │   ├── public
+    │   │   ├── favicon.ico
+    │   │   ├── index.html
+    │   │   └── manifest.json
+    │   ├── src
+    │   │   ├── app
+    │   │   │   ├── App.js
+    │   │   │   ├── ImageUpload.js
+    │   │   │   ├── Prediction.js
+    │   │   │   └── services
+    │   │   │       └── DataService.js
+    │   │   └── index.js
+    │   └── yarn.lock
+    ├── model-deployment
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── cli.py
+    │   ├── docker-entrypoint.sh
+    │   └── docker-shell.sh
+    ├── models
+    │   └── resnet152v2
+    │       ├── Dockerfile
+    │       ├── Pipfile
+    │       ├── Pipfile.lock
+    │       ├── distiller.py
+    │       ├── docker-shell.sh
+    │       ├── dog_breed_dataset
+    │       │   └── images
+    │       │       └── Images
+    │       ├── model_training_age_dataset.py
+    │       ├── model_training_breed_dataset.py
+    │       ├── model_training_breed_dataset_distillation.py
+    │       ├── model_training_breed_dataset_pruned.py
+    │       ├── run-model.sh
+    │       ├── secrets
+    │       │   └── data-service-account.json
+    │       └── util.py
+    ├── preprocessing
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── ResizeDogImages.ipynb
+    │   ├── docker-entrypoint.sh
+    │   ├── docker-shell.sh
+    │   ├── preprocess_age.py
+    │   ├── preprocess_breed.py
+    │   └── util.py
+    ├── pwd
+    ├── secrets
+    │   ├── data-service-account.json
+    │   └── wandb.json
+    ├── tensorizing
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── curr_image
+    │   ├── curr_image.jpg
+    │   ├── docker-entrypoint.sh
+    │   ├── docker-shell.sh
+    │   ├── hold_working_age.py
+    │   ├── secrets
+    │   │   └── data-service-account.json
+    │   ├── tensorize_age_dataset.py
+    │   └── tensorize_breed_dataset.py
+    ├── validation
+    │   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── cv_val.py
+    │   ├── cv_val_sql.py
+    │   ├── docker-shell.sh
+    │   └── requirements.txt
+    └── workflow
+        ├── Dockerfile
+        ├── Pipfile
+        ├── Pipfile.lock
+        ├── age_model_training.yaml
+        ├── cli.py
+        ├── data_preprocessing.yaml
+        ├── docker-entrypoint.sh
+        ├── docker-shell.sh
+        ├── pipeline.yaml
+        ├── secrets
+        │   └── compute-service-account.json
+        └── tensorizing.yaml
+
+32 directories, 109 files
+
+# AC215 - Milestone 5 - DogWatcher (powered by DogNet)
+
+**Team Members**
+Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
+
+**Group Name**
+EngAi Group
+
+**Project**
+In this project, we aim to build an application that can predict a dog's breed and age using a photo.  
+
+### Milestone 5 ###
+
+In this milestone we worked on multiple aspects of the project:
+      (1) Deployment of the web service to GCP
+      (2) Frontend/React container 
+      (3) API service 
+
+** Deployment Strategy **
+
+We used Ansible to automate the provisioning and deployment of our frontend and backend containers to GCP. Below you can find a screenshot of the VM that's running our service on GCP. Additionally, you can find a screenshot that shows the container images we have pused to the GCP container repository. 
+
+
 
 
 --------
