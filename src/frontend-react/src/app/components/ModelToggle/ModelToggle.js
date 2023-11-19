@@ -1,16 +1,21 @@
+import './ModelToggle.css'; // Import the CSS file
+
 import React from 'react';
+
 
 const ModelToggle = ({ selectedModel, onModelChange }) => {
   return (
-    <label>
-      Select Model Type: 
-      <select value={selectedModel} onChange={onModelChange}>
+    <div className="select-container">
+    <label htmlFor="custom-select" className="select-label">
+      Select Model Type:
+    </label>
+      <select id="custom-select" className="custom-select" value={selectedModel} onChange={onModelChange}>
         <option value="default" disabled>Select a Model</option>
         <option value="hosted-model">Hosted Model</option>
         <option value="local-model">Local Model</option>
         {/* Add more model options as needed */}
       </select>
-    </label>
+    </div>
   );
 };
 
