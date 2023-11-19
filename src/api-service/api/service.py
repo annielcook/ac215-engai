@@ -25,7 +25,7 @@ async def startup():
         model_config = json.load(f)
     with open('config/index-to-breed.json', 'r') as f:
         index_to_breed_map = json.load(f)
-    with open('../secrets/wandb.json', 'r') as f:
+    with open('secrets/wandb.json', 'r') as f:
         wandb_key = json.load(f)['wandb_key']
 
     global model_controller
