@@ -4,8 +4,8 @@ Team EngAi Milestone 5 Deliverable
 AC215 - Milestone 5
 
 Project Organization
-------------
-    ├── LICENSE
+```bash
+├── LICENSE
 ├── README.md
 ├── notebooks
 │   ├── ExploratoryDataAnalysis.ipynb
@@ -145,9 +145,10 @@ Project Organization
         ├── secrets
         │   └── compute-service-account.json
         └── tensorizing.yaml
+```
 
 32 directories, 109 files
-------------
+
 
 # AC215 - Milestone 5 - DogWatcher (powered by DogNet)
 
