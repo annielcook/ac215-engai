@@ -265,35 +265,52 @@ This base architecture did not perform well on the dogs dataset, as we only achi
 
 ![Screenshot 2023-11-20 at 7 02 44 AM](https://github.com/annielcook/ac215-engai/assets/48300750/4f0c1b62-1a63-41b4-b025-0e6569e07095)
 
-* ConNeXtBaseLarge: Total Parameters - 197,273,656 | Total Size - 752.54 MB
-* DenseNet201: Total Parameters - 19,557,304 | Total Size - 74.61 MB
+###### DenseNet201: Total Parameters - 19,557,304 | Total Size - 74.61 MB
+
 Using the DenseNet201 model architecture we achieved very good results for such a small model, yet it still obtained a lower max validation accuracy compared to ResNet152v2, of 81.9%. The difference is minimal but as a team we decided to use ResNet152v2 as our teacher model.
 
 ![Screenshot 2023-11-20 at 7 03 43 AM](https://github.com/annielcook/ac215-engai/assets/48300750/f8435467-61e3-42f5-9044-8ffb1f3dc2e5)
 
 
 
-Student model:
+##### Student model:
 
-* ResNet50: Total Parameters - 24,855,024 | Total Size - 94.81 MB
+###### ResNet50: Total Parameters - 24,855,024 | Total Size - 94.81 MB
+
 This model architecture did not perform well on the dataset. The training accuracy was around 84% by the end of the 30 epochs, while the validation accuracy was around just 24% meaning that the model was not generalizing well, and overfitting the training data.
 
 ![Screenshot 2023-11-20 at 7 59 13 AM](https://github.com/annielcook/ac215-engai/assets/48300750/d7050a2e-5116-4263-af60-2de4eb3a99e5)
 
-* ConNextSmall: Total Parameters - 88,317,680 | Total Size - 336.91 MB
-* DenseNet121: Total Parameters - 7,788,720 | Total Size - 29.71 MB
+###### ConNextSmall: Total Parameters - 88,317,680 | Total Size - 336.91 MB
+
+Similar to the ConNextBase architecture, this model did not generalize well and overfit the training data, achieving a max training accuracy of XX% and max validation accuracy of XX%
+
+###### DenseNet121: Total Parameters - 7,788,720 | Total Size - 29.71 MB
+
 With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
 
 ![Screenshot 2023-11-20 at 7 09 19 AM](https://github.com/annielcook/ac215-engai/assets/48300750/a44727f4-0a2e-4a17-a313-7cc6f488e266)
 
-* DenseNet169: Total Parameters - 13,716,656 | Total Size - 52.32 MB
-
-Model Distillation: Total Parameters - 7,788,720 | Total Size - 29.71 MB
+###### Model Distillation: Total Parameters - 7,788,720 | Total Size - 29.71 MB
 
 For model distillation we decided to use the teacher model with the ResNet152v2 base architecture and we built a new student model using the DenseNet121 architecture. Then based on the contents reviewed in class we proceeded to implement the distillation training loop and train the student model by distilling from the teacher model. We obtained a 92.6% validation accuracy, even greater than with the teacher model, on epoch 28. Using distillation we managed to compress the teacher model 7.65x and achieve better validation accuracy.
 
 ![Screenshot 2023-11-19 at 11 53 21 PM](https://github.com/annielcook/ac215-engai/assets/48300750/660b0f77-2dbd-4935-8eec-67c50a587a93)
 
+This result es extremely positive as the distilled student model achieved a better validation accuracy than the teach model. Even more so, this model obtained a validation accuracy similar to top SOTA models for Fine-Grained Image Classification on the Stanford Dogs dataset. 
+
+(https://paperswithcode.com/sota/fine-grained-image-classification-on-stanford-1)
+
+The Nº1 model on this list, the ViT-NeT model achieved a 93.6% accuracy on the same dataset. Our results would place our distilled student model in the top 10 of this list.
+
+Below is a comparison table obtained from the ViT-NeT paper. 
+
+
+
+![Screenshot 2023-11-20 at 10 24 08 AM](https://github.com/annielcook/ac215-engai/assets/48300750/825a1fc2-d9a3-445d-a0b8-f2944fb42228)
+
+Source: 
+Kim, S., Nam, J., & Ko, B. C. (2022). ViT-NeT: Interpretable Vision Transformers with Neural Tree Decoder. In Proceedings of the 39th International Conference on Machine Learning (PMLR 162). Baltimore, Maryland, USA.
 
 --------
 # AC215 - Milestone 4 - DogWatcher (powered by DogNet)
