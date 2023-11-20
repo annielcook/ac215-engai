@@ -26,16 +26,16 @@ def main(args=None):
         print("Upload model to GCS")
 
         # Download model artifact from wandb
-        # run = wandb.init()
-        # artifact = run.use_artifact(
-        #     BEST_MODEL,
-        #     type="model",
-        # )
-        # artifact_dir = artifact.download()
-        # print("artifact_dir", artifact_dir)
+        run = wandb.init()
+        artifact = run.use_artifact(
+            BEST_MODEL,
+            type="model",
+        )
+        artifact_dir = artifact.download()
+        print("artifact_dir", artifact_dir)
 
         # Load model
-        prediction_model = tf.keras.models.load_model("artifacts")
+        prediction_model = tf.keras.models.load_model(artifact_dir)
         print(prediction_model.summary())
 
         # Preprocess Image
@@ -119,12 +119,6 @@ if __name__ == "__main__":
         "--deploy",
         action="store_true",
         help="Deploy saved model to Vertex AI",
-    )
-    parser.add_argument(
-        "-t",
-        "--test",
-        action="store_true",
-        help="Test deployment to Vertex AI",
     )
 
     args = parser.parse_args()

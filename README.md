@@ -165,11 +165,13 @@ In this project, we aim to build an application that can predict a dog's breed a
 
 In this milestone we worked on multiple aspects of the project:
 
-      (1) Deployment of the web service to GCP
+      (1) Deployment of the web service to GCP [/src/deployment/](src/deployment/)
       
-      (2) Frontend/React container 
+      (2) Frontend/React container [/src/frontend-react/](src/frontend-react/)
       
-      (3) API service 
+      (3) API service [/src/api-service/](src/api-service/)
+
+      (4) Add model deployment to Vertex AI [/src/model-deployment/](src/model-deployment/)
 
 #### Deployment Strategy ####
 
@@ -183,6 +185,7 @@ Additionally, you can find a screenshot that shows the container images we have 
 
 
 **Deployment Container**
+[/src/deployment/](src/deployment/)
 
 This container builds the containers, creates and provisions a GCP instance and then deploys those containers to those intances.
 
@@ -209,6 +212,22 @@ If you wish to run the container locally :
 * Setup Webserver on the Instance
 
 `ansible-playbook deploy-setup-webserver.yml -i inventory.yml`
+
+#### Adding Model Deployment to Vertex AI
+[/src/model-deployment/](src/model-deployment/)
+In order to finish out the model pipeline which powers the ML application, we added the final step of model deployment to the Vertex AI pipeline. This step utilizes a command line interface to take the model from Weights & Biases, upload it to Google Cloud Storage, and deploy it to Vertex AI. With the final step in place, the end to end model development from data processing, to tensorizing, to model training, and now model deployment are all part of a unified pipeline.
+![WhatsApp Image 2023-11-16 at 8 49 40 PM](https://github.com/annielcook/ac215-engai/assets/6455793/ffd82444-e3c0-4dba-bbcf-160c310bde07)
+
+To use just the model deployment service, first launch the service with `./docker-shell.sh` to get to the interpreter. 
+
+* Upload the model from Weights & Biases to GCS
+
+`python3 cli.py --upload`
+
+* Deploy the model to Vertex AI
+ 
+ `python3 cli.py --deploy`
+
 
 --------
 # AC215 - Milestone 4 - DogWatcher (powered by DogNet)
