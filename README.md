@@ -274,6 +274,10 @@ Using the DenseNet201 model architecture we achieved very good results for such 
 Student model:
 
 * ResNet50: Total Parameters - 24,855,024 | Total Size - 94.81 MB
+This model architecture did not perform well on the dataset. The training accuracy was around 84% by the end of the 30 epochs, while the validation accuracy was around just 24% meaning that the model was not generalizing well, and overfitting the training data.
+
+![Screenshot 2023-11-20 at 7 59 13 AM](https://github.com/annielcook/ac215-engai/assets/48300750/d7050a2e-5116-4263-af60-2de4eb3a99e5)
+
 * ConNextSmall: Total Parameters - 88,317,680 | Total Size - 336.91 MB
 * DenseNet121: Total Parameters - 7,788,720 | Total Size - 29.71 MB
 With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
