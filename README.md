@@ -191,9 +191,11 @@ In this milestone we worked on multiple aspects of the project:
 
 You can find the Solutions Architecture and Technical Architecture diagrams below. The two diagrams detail how the various components of the system work together to classify dog images. 
 
+**Solution Architecture**
+![image](https://github.com/annielcook/ac215-engai/blob/main/images/solution-arch.png)
+
 **Technical Architecture**
 ![image](https://github.com/annielcook/ac215-engai/assets/1981839/2eff57ac-42d0-4b46-855b-286a0fa9f646)
-
 
 #### Deployment Strategy ####
 
