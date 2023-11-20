@@ -251,14 +251,16 @@ To use just the model deployment service, first launch the service with `./docke
 
  We tested different base architectures for both the teacher and the student model. 
 
-Teacher model:
+## Teacher model:
 
-* ResNet152v2: Total Parameters - 59,630,968 | Total Size - 227.47 MB \n
+# ResNet152v2: Total Parameters - 59,630,968 | Total Size - 227.47 MB 
+
 With this model architecture we obtained a maximum validation accuracy of 82.5% on epoch 20. The model learned fairly quickly compared to other architectures, achieving a 68% validation accuracy on the first epoch.
 
 ![Screenshot 2023-11-19 at 11 25 48 PM](https://github.com/annielcook/ac215-engai/assets/48300750/d3dbb014-6309-408c-9f7c-5500b081653d)
 
-* ConNeXtBase: Total Parameters - 88,353,784 | Total Size - 337.04 MB
+# ConNeXtBase: Total Parameters - 88,353,784 | Total Size - 337.04 MB
+
 This base architecture did not perform well on the dogs dataset, as we only achieved a 42.25% maximum validation accuracy on epoch 27.
 
 ![Screenshot 2023-11-20 at 7 02 44 AM](https://github.com/annielcook/ac215-engai/assets/48300750/4f0c1b62-1a63-41b4-b025-0e6569e07095)
