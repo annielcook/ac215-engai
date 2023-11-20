@@ -216,6 +216,7 @@ If you wish to run the container locally :
 #### Adding Model Deployment to Vertex AI
 [/src/model-deployment/](src/model-deployment/)
 In order to finish out the model pipeline which powers the ML application, we added the final step of model deployment to the Vertex AI pipeline. This step utilizes a command line interface to take the model from Weights & Biases, upload it to Google Cloud Storage, and deploy it to Vertex AI. With the final step in place, the end to end model development from data processing, to tensorizing, to model training, and now model deployment are all part of a unified pipeline.
+![WhatsApp Image 2023-11-16 at 8 49 40 PM](https://github.com/annielcook/ac215-engai/assets/6455793/ffd82444-e3c0-4dba-bbcf-160c310bde07)
 
 To use just the model deployment service, first launch the service with `./docker-shell.sh` to get to the interpreter. 
 
