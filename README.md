@@ -332,14 +332,21 @@ The `ModelController` is responsible for calling either the local model (saved i
 
 #### Front-End Development
 
-#### Components
+##### Components
+We have three components in the [Components](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components) directory.
 
-#### Services
+[Footer](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/Footer) contains the footer that stores the history of the past 5 search results (just the predicted breed, not the probabilities).
+
+[ImageUpload](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/ImageUpload) contains the interface for uploading an image to the website, making a call to the model (depending on ModelToggle), returning the predicted breed and confidence level (probability), and storing that predicted breed in the Footer as part of the search history.
+
+[ModelToggle](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/ModelToggle) has a dropdown for the user to select either our Hosted or Local Model. We included both to show the difference in response times. The model itself is the same so the performance in terms of accuracy is expected to be the same as well. The parameter is passed from the user-selected dropdown as part of the formData argument that is read in DataService in the services section (see below).
+
+##### Services
 We have two React files in the [Services](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/services) directory.
 
-[BreedParse](https://github.com/annielcook/ac215-engai/blob/main/src/frontend-react/src/app/services/BreedParse.js) is used to extract the reader friendly version of the predicted breed species name to display it in the results section of [ImageUpload](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/ImageUpload) and append it to the history of the past 5 results in the [Footer](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/Footer).
+[BreedParse](https://github.com/annielcook/ac215-engai/blob/main/src/frontend-react/src/app/services/BreedParse.js) is used to extract the reader friendly version of the predicted breed species name to display it in the results section of ImageUpload and append it to the history of the past 5 results in the Footer.
 
-[DataService](https://github.com/annielcook/ac215-engai/blob/main/src/frontend-react/src/app/services/DataService.js) is used to make the server call to the API endpoint to select the right model, depending on the selection in the [ModelToggle](https://github.com/annielcook/ac215-engai/tree/main/src/frontend-react/src/app/components/ModelToggle) component.
+[DataService](https://github.com/annielcook/ac215-engai/blob/main/src/frontend-react/src/app/services/DataService.js) is used to make the server call to the API endpoint to select the right model, depending on the selection in the ModelToggle component.
 
 
 **GCP Bucket Structure**
