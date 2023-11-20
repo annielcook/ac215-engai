@@ -10,6 +10,7 @@ google-cloud-aiplatform = "*"
 wandb = "*"
 pillow = "*"
 tensorflow-aarch64 = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.8"

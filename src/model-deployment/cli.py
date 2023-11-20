@@ -4,17 +4,11 @@ Module that contains the command line app.
 Typical usage example from command line:
         python cli.py --upload
         python cli.py --deploy
-        python cli.py --predict
 """
 
 import os
-import requests
-import zipfile
-import tarfile
+
 import argparse
-from glob import glob
-import numpy as np
-import base64
 from google.cloud import aiplatform
 import tensorflow as tf
 
@@ -23,7 +17,7 @@ import wandb
 
 GCP_PROJECT = os.environ["GCP_PROJECT"]
 GCS_MODELS_BUCKET_NAME = os.environ["GCS_MODELS_BUCKET_NAME"]
-BEST_MODEL = "engai/DogNet-breed/model-DogNetV1-breed:latest"
+BEST_MODEL = "engai/DogNet-breed/DogNet_breed_student_distilled:latest"
 ARTIFACT_URI = f"gs://{GCS_MODELS_BUCKET_NAME}/{BEST_MODEL}"
 
 
@@ -31,21 +25,17 @@ def main(args=None):
     if args.upload:
         print("Upload model to GCS")
 
-        WANDB_KEY = os.environ["WANDB_KEY"]
-        # Login into wandb
-        wandb.login(key=WANDB_KEY)
-
         # Download model artifact from wandb
-        run = wandb.init()
-        artifact = run.use_artifact(
-            BEST_MODEL,
-            type="model",
-        )
-        artifact_dir = artifact.download()
-        print("artifact_dir", artifact_dir)
+        # run = wandb.init()
+        # artifact = run.use_artifact(
+        #     BEST_MODEL,
+        #     type="model",
+        # )
+        # artifact_dir = artifact.download()
+        # print("artifact_dir", artifact_dir)
 
         # Load model
-        prediction_model = tf.keras.models.load_model(artifact_dir)
+        prediction_model = tf.keras.models.load_model("artifacts")
         print(prediction_model.summary())
 
         # Preprocess Image
