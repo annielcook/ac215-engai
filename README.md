@@ -325,7 +325,10 @@ Kim, S., Nam, J., & Ko, B. C. (2022). ViT-NeT: Interpretable Vision Transformers
 
 
 #### API Service
+<img width="748" alt="Screenshot 2023-11-20 at 5 38 34 PM" src="https://github.com/annielcook/ac215-engai/assets/22153363/244b7316-9693-4234-b43c-4e61d3248236">
+The `api-service` provides two endpoints, the index and the predict endpoints. The `/predict` endpoint is called from the frontend with an image to make a model inference. 
 
+The `ModelController` is responsible for calling either the local model (saved in the container) or the remote model (stored on VertexAI)
 
 #### Front-End Development
 
