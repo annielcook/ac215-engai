@@ -235,6 +235,24 @@ To use just the model deployment service, first launch the service with `./docke
 
  [/notebooks](/notebooks)
 
+ In milestone 4 we used model pruning as our compression technique but realized that distillation was more suitable for our application since most of the models layers were not being trained. All of the code used to test different model combinations and distillation can be found in the notebook linked above.
+
+ We tested different base architectures for both the teacher and the student model. 
+
+Teacher model:
+
+* ResNet152v2
+* ConNeXtBase
+* ConNeXtBaseLarge
+* DenseNet201
+
+Student model:
+
+* ResNet50
+* ConNextSmall
+* DenseNet121
+* DenseNet169
+
 
 --------
 # AC215 - Milestone 4 - DogWatcher (powered by DogNet)
