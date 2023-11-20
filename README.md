@@ -253,7 +253,7 @@ To use just the model deployment service, first launch the service with `./docke
 
 Teacher model:
 
-* ResNet152v2: Total Parameters - 59,630,968 | Total Size - 227.47 MB
+* ResNet152v2: Total Parameters - 59,630,968 | Total Size - 227.47 MB \n
 With this model architecture we obtained a maximum validation accuracy of 82.5% on epoch 20. The model learned fairly quickly compared to other architectures, achieving a 68% validation accuracy on the first epoch.
 
 ![Screenshot 2023-11-19 at 11 25 48 PM](https://github.com/annielcook/ac215-engai/assets/48300750/d3dbb014-6309-408c-9f7c-5500b081653d)
