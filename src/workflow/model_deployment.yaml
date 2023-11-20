@@ -1,0 +1,24 @@
+# PIPELINE DEFINITION
+# Name: model-deployment-pipeline
+components:
+  comp-model-deployment-component:
+    executorLabel: exec-model-deployment-component
+deploymentSpec:
+  executors:
+    exec-model-deployment-component:
+      container:
+        image: annielcook/engai-model-deployment:1115v1
+pipelineInfo:
+  name: model-deployment-pipeline
+root:
+  dag:
+    tasks:
+      model-deployment-component:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-model-deployment-component
+        taskInfo:
+          name: model-deployment-component
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.3.0

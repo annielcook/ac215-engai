@@ -18,6 +18,7 @@ GCP_SERVICE_ACCOUNT = '32226619505-compute@developer.gserviceaccount.com'
 DATA_PREPROCESSING_IMAGE = "nevilgeorge/eng-ai-preprocessing"
 TENSORIZING_IMAGE = "abzp/eng-ai-tensorizing:abpujare"
 AGE_MODEL_TRAINING_IMAGE = "abzp/ac215-age-model-training:abpujare"
+MODEL_DEPLOYMENT_IMAGE = "annielcook/engai-model-deployment:1115v1"
 
 
 def generate_uuid(length: int = 8) -> str:
@@ -29,7 +30,6 @@ def main(args=None):
     with open(GOOGLE_APP_CREDENTIALS, 'r') as f:
         secrets = json.load(f)
     
-    gcs_service_account = secrets['private_key_id']
     gcp_project_id = secrets['project_id']
 
     if args.data_preprocessing:
@@ -107,6 +107,31 @@ def main(args=None):
 
         job.run(service_account=GCP_SERVICE_ACCOUNT)
     
+    if args.model_deployment:
+        # Define a Pipeline
+        @dsl.pipeline
+        def model_deployment_pipeline():
+            model_deployment_component()
+
+        # Build yaml file for pipeline
+        compiler.Compiler().compile(
+            model_deployment_pipeline, package_path="model_deployment.yaml"
+        )
+
+        # Submit job to Vertex AI
+        aip.init(project=gcp_project_id, staging_bucket=BUCKET_URI)
+
+        job_id = generate_uuid()
+        DISPLAY_NAME = "engai-age-model-training-" + job_id
+        job = aip.PipelineJob(
+            display_name=DISPLAY_NAME,
+            template_path="model_deployment.yaml",
+            pipeline_root=PIPELINE_ROOT,
+            enable_caching=False,
+        )
+
+        job.run(service_account=GCP_SERVICE_ACCOUNT)
+    
     if args.pipeline:
         # Define a Pipeline
         @dsl.pipeline
@@ -121,6 +146,11 @@ def main(args=None):
                 age_model_training_component()
                 .set_display_name('Model Training')
                 .after(tensorizing_task)
+            )
+            _ = (
+                model_deployment_component()
+                .set_display_name('Model Deployment')
+                .after(age_model_training_task)
             )
         
         compiler.Compiler().compile(ml_pipeline, package_path='pipeline.yaml')
@@ -165,6 +195,15 @@ def age_model_training_component():
     )
     return container_spec
 
+@dsl.container_component
+def model_deployment_component():
+    container_spec = dsl.ContainerSpec(
+        image=MODEL_DEPLOYMENT_IMAGE,
+        command=[],
+        args=[],
+    )
+    return container_spec
+
 if __name__ == "__main__":
     # Generate the inputs arguments parser
     # if you type into the terminal 'python cli.py --help', it will provide the description
@@ -187,6 +226,12 @@ if __name__ == "__main__":
         "--age_model_training",
         action="store_true",
         help="Run just the age model training task in the pipeline.",
+    )
+    parser.add_argument(
+        "-d",
+        "--model_deployment",
+        action="store_true",
+        help="Run just the model deployment task in the pipeline.",
     )
     parser.add_argument(
         "-w",
