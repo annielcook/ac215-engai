@@ -173,6 +173,8 @@ In this milestone we worked on multiple aspects of the project:
 
       (4) Add model deployment to Vertex AI [/src/model-deployment/](src/model-deployment/)
 
+      (5) Switching from Model Pruning to Knowledge Distillation as compression technique
+
 #### Deployment Strategy ####
 
 We used Ansible to automate the provisioning and deployment of our frontend and backend containers to GCP. Below you can find a screenshot of the VM that's running our service on GCP.  
@@ -227,6 +229,11 @@ To use just the model deployment service, first launch the service with `./docke
 * Deploy the model to Vertex AI
  
  `python3 cli.py --deploy`
+
+
+ #### Model Distillation
+
+ [/notebooks](/notebooks)
 
 
 --------
