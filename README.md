@@ -71,14 +71,14 @@ Project Organization
     │   │   │   ├── background.png
     │   │   │   ├── components
     │   │   │   │   ├── Footer
-    |   │   │   │   │   ├── Footer.css
-    |   │   │   │   │   └── Footer.js
-    |   │   │   │   ├── ImageUpload
-    |   │   │   │   │   ├── ImageUpload.css
-    |   │   │   │   │   └── ImageUpload.js
-    |   │   │   │   └── ModelToggle
-    |   │   │   │   │   ├── ModelToggle.css
-    |   │   │   │   │   └── ModelToggle.js
+    │   │   │   │   │   ├── Footer.css
+    │   │   │   │   │   └── Footer.js
+    │   │   │   │   ├── ImageUpload
+    │   │   │   │   │   ├── ImageUpload.css
+    │   │   │   │   │   └── ImageUpload.js
+    │   │   │   │   ├── ModelToggle
+    │   │   │   │   │   ├── ModelToggle.css
+    │   │   │   │   │   └── ModelToggle.js
     │   │   │   └── services
     │   │   │       ├── BreedParse.js
     │   │   │       └── DataService.js
