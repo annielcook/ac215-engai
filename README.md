@@ -243,7 +243,7 @@ To use just the model deployment service, first launch the service with `./docke
  `python3 cli.py --deploy`
 
 
- #### Model Distillation
+#### Model Distillation
 
  [/notebooks](/notebooks)
 
@@ -253,17 +253,29 @@ To use just the model deployment service, first launch the service with `./docke
 
 Teacher model:
 
-* ResNet152v2
-* ConNeXtBase
+* ResNet152v2: Total Parameters - 88,353,784 | Total Size - 337.04 MB
+*     With this model architecture we obtained a maximum validation accuracy of 82.5% on epoch 20. The model learned fairly quickly compared to other architectures, achieving a 68% validation accuracy on the first epoch.
+
+![Screenshot 2023-11-19 at 11 25 48 PM](https://github.com/annielcook/ac215-engai/assets/48300750/d3dbb014-6309-408c-9f7c-5500b081653d)
+
+* ConNeXtBase: Total Parameters - 88,353,784 | Total Size - 337.04 MB
 * ConNeXtBaseLarge
 * DenseNet201
 
 Student model:
 
-* ResNet50
+* ResNet50: 
 * ConNextSmall
-* DenseNet121
+* DenseNet121:
+*      With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
+
+![Screenshot 2023-11-19 at 11 28 30 PM](https://github.com/annielcook/ac215-engai/assets/48300750/99df5993-e312-44de-955b-9f4379ea5493)
+
 * DenseNet169
+
+Model Distillation:
+
+For model distillation we decided to use the teacher model with the ResNet152v2 base architecture and we built a new student model using the DenseNet121 architecture
 
 
 --------
