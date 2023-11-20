@@ -278,7 +278,7 @@ Student model:
 * DenseNet121: Total Parameters - 7,788,720 | Total Size - 29.71 MB
 With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
 
-![Screenshot 2023-11-19 at 11 28 30 PM](https://github.com/annielcook/ac215-engai/assets/48300750/99df5993-e312-44de-955b-9f4379ea5493)
+![Screenshot 2023-11-20 at 7 09 19 AM](https://github.com/annielcook/ac215-engai/assets/48300750/a44727f4-0a2e-4a17-a313-7cc6f488e266)
 
 * DenseNet169: Total Parameters - 13,716,656 | Total Size - 52.32 MB
 
