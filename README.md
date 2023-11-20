@@ -6,11 +6,12 @@ AC215 - Milestone 5
 Project Organization
 ```bash
 ├── LICENSE
-├── README.md
 ├── notebooks
-│   ├── ExploratoryDataAnalysis.ipynb
 │   ├── breed_labels.txt
+│   ├── DogNet_Breed_Distillation.ipynb
+│   ├── ExploratoryDataAnalysis.ipynb
 │   └── model_testing.ipynb
+├── README.md
 ├── requirements.txt
 └── src
     ├── api-service
@@ -55,9 +56,9 @@ Project Organization
     │   ├── docker-shell.sh
     │   └── team-engai-dogs.dvc
     ├── frontend-react
+    │   ├── docker-shell.sh
     │   ├── Dockerfile
     │   ├── Dockerfile.dev
-    │   ├── docker-shell.sh
     │   ├── package.json
     │   ├── public
     │   │   ├── favicon.ico
@@ -65,10 +66,21 @@ Project Organization
     │   │   └── manifest.json
     │   ├── src
     │   │   ├── app
+    │   │   │   ├── App.css
     │   │   │   ├── App.js
-    │   │   │   ├── ImageUpload.js
-    │   │   │   ├── Prediction.js
+    │   │   │   ├── background.png
+    │   │   │   ├── components
+    │   │   │   │   ├── Footer
+    |   │   │   │   │   ├── Footer.css
+    |   │   │   │   │   └── Footer.js
+    |   │   │   │   ├── ImageUpload
+    |   │   │   │   │   ├── ImageUpload.css
+    |   │   │   │   │   └── ImageUpload.js
+    |   │   │   │   └── ModelToggle
+    |   │   │   │   │   ├── ModelToggle.css
+    |   │   │   │   │   └── ModelToggle.js
     │   │   │   └── services
+    │   │   │       ├── BreedParse.js
     │   │   │       └── DataService.js
     │   │   └── index.js
     │   └── yarn.lock
