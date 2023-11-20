@@ -187,6 +187,14 @@ In this milestone we worked on multiple aspects of the project:
 
       (5) Switching from Model Pruning to Knowledge Distillation as compression technique
 
+#### Application Design ####
+
+You can find the Solutions Architecture and Technical Architecture diagrams below. The two diagrams detail how the various components of the system work together to classify dog images. 
+
+**Technical Architecture**
+![image](https://github.com/annielcook/ac215-engai/assets/1981839/2eff57ac-42d0-4b46-855b-286a0fa9f646)
+
+
 #### Deployment Strategy ####
 
 We used Ansible to automate the provisioning and deployment of our frontend and backend containers to GCP. Below you can find a screenshot of the VM that's running our service on GCP.  
