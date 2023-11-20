@@ -295,7 +295,7 @@ With this base model architecture we achieved a maximum validation accuracy of 7
 
 For model distillation we decided to use the teacher model with the ResNet152v2 base architecture and we built a new student model using the DenseNet121 architecture. Then based on the contents reviewed in class we proceeded to implement the distillation training loop and train the student model by distilling from the teacher model. We obtained a 92.6% validation accuracy, even greater than with the teacher model, on epoch 28. Using distillation we managed to compress the teacher model 7.65x and achieve better validation accuracy.
 
-![Screenshot 2023-11-19 at 11 53 21 PM](https://github.com/annielcook/ac215-engai/assets/48300750/660b0f77-2dbd-4935-8eec-67c50a587a93)
+![Screenshot 2023-11-20 at 7 09 19 AM](https://github.com/annielcook/ac215-engai/assets/48300750/e255c387-54de-4df8-8e23-3a58b276a5d3)
 
 This result es extremely positive as the distilled student model achieved a better validation accuracy than the teach model. Even more so, this model obtained a validation accuracy similar to top SOTA models for Fine-Grained Image Classification on the Stanford Dogs dataset. 
 
