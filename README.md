@@ -245,7 +245,7 @@ To use just the model deployment service, first launch the service with `./docke
 
 #### Model Distillation
 
- [/notebooks](/notebooks)
+ [/notebooks/DogNet_Breed_Distillation.ipynb](/notebooks/DogNet_Breed_Distillation.ipynb)
 
  In milestone 4 we used model pruning as our compression technique but realized that distillation was more suitable for our application since most of the models layers were not being trained. All of the code used to test different model combinations and distillation can be found in the notebook linked above.
 
@@ -253,29 +253,31 @@ To use just the model deployment service, first launch the service with `./docke
 
 Teacher model:
 
-* ResNet152v2: Total Parameters - 88,353,784 | Total Size - 337.04 MB
-*     With this model architecture we obtained a maximum validation accuracy of 82.5% on epoch 20. The model learned fairly quickly compared to other architectures, achieving a 68% validation accuracy on the first epoch.
+* ResNet152v2: Total Parameters - 59,630,968 | Total Size - 227.47 MB
+With this model architecture we obtained a maximum validation accuracy of 82.5% on epoch 20. The model learned fairly quickly compared to other architectures, achieving a 68% validation accuracy on the first epoch.
 
 ![Screenshot 2023-11-19 at 11 25 48 PM](https://github.com/annielcook/ac215-engai/assets/48300750/d3dbb014-6309-408c-9f7c-5500b081653d)
 
 * ConNeXtBase: Total Parameters - 88,353,784 | Total Size - 337.04 MB
-* ConNeXtBaseLarge
-* DenseNet201
+* ConNeXtBaseLarge: Total Parameters - 197,273,656 | Total Size - 752.54 MB
+* DenseNet201: Total Parameters - 19,557,304 | Total Size - 74.61 MB
 
 Student model:
 
-* ResNet50: 
-* ConNextSmall
-* DenseNet121:
-*      With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
+* ResNet50: Total Parameters - 24,855,024 | Total Size - 94.81 MB
+* ConNextSmall: Total Parameters - 88,317,680 | Total Size - 336.91 MB
+* DenseNet121: Total Parameters - 7,788,720 | Total Size - 29.71 MB
+With this base model architecture we achieved a maximum validation accuracy of 71.6% by epoch 17. The model was able to learn quickly initially and the accuracy obtained was significantly lower than that obtained with the teacher model, making it a prime candidate for model distillation.
 
 ![Screenshot 2023-11-19 at 11 28 30 PM](https://github.com/annielcook/ac215-engai/assets/48300750/99df5993-e312-44de-955b-9f4379ea5493)
 
-* DenseNet169
+* DenseNet169: Total Parameters - 13,716,656 | Total Size - 52.32 MB
 
-Model Distillation:
+Model Distillation: Total Parameters - 7,788,720 | Total Size - 29.71 MB
 
-For model distillation we decided to use the teacher model with the ResNet152v2 base architecture and we built a new student model using the DenseNet121 architecture
+For model distillation we decided to use the teacher model with the ResNet152v2 base architecture and we built a new student model using the DenseNet121 architecture. Then based on the contents reviewed in class we proceeded to implement the distillation training loop and train the student model by distilling from the teacher model. We obtained a 92.6% validation accuracy, even greater than with the teacher model, on epoch 28. Using distillation we managed to compress the teacher model 7.65x and achieve better validation accuracy.
+
+![Screenshot 2023-11-19 at 11 53 21 PM](https://github.com/annielcook/ac215-engai/assets/48300750/660b0f77-2dbd-4935-8eec-67c50a587a93)
 
 
 --------
