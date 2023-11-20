@@ -281,7 +281,7 @@ This model architecture did not perform well on the dataset. The training accura
 
 ![Screenshot 2023-11-20 at 7 59 13 AM](https://github.com/annielcook/ac215-engai/assets/48300750/d7050a2e-5116-4263-af60-2de4eb3a99e5)
 
-###### ConNextSmall: Total Parameters - 88,317,680 | Total Size - 336.91 MB
+###### ConNextSmall: Total Parameters - 50,076,880 | Total Size - 191.03 MB
 
 Similar to the ConNextBase architecture, this model did not generalize well and overfit the training data, achieving a max training accuracy of XX% and max validation accuracy of XX%
 
