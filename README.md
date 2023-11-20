@@ -259,8 +259,17 @@ With this model architecture we obtained a maximum validation accuracy of 82.5% 
 ![Screenshot 2023-11-19 at 11 25 48 PM](https://github.com/annielcook/ac215-engai/assets/48300750/d3dbb014-6309-408c-9f7c-5500b081653d)
 
 * ConNeXtBase: Total Parameters - 88,353,784 | Total Size - 337.04 MB
+This base architecture did not perform well on the dogs dataset, as we only achieved a 42.25% maximum validation accuracy on epoch 27.
+
+![Screenshot 2023-11-20 at 7 02 44 AM](https://github.com/annielcook/ac215-engai/assets/48300750/4f0c1b62-1a63-41b4-b025-0e6569e07095)
+
 * ConNeXtBaseLarge: Total Parameters - 197,273,656 | Total Size - 752.54 MB
 * DenseNet201: Total Parameters - 19,557,304 | Total Size - 74.61 MB
+Using the DenseNet201 model architecture we achieved very good results for such a small model, yet it still obtained a lower max validation accuracy compared to ResNet152v2, of 81.9%. The difference is minimal but as a team we decided to use ResNet152v2 as our teacher model.
+
+![Screenshot 2023-11-20 at 7 03 43 AM](https://github.com/annielcook/ac215-engai/assets/48300750/f8435467-61e3-42f5-9044-8ffb1f3dc2e5)
+
+
 
 Student model:
 
