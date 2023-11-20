@@ -76,9 +76,9 @@ Project Organization
     │   │   │   │   ├── ImageUpload
     │   │   │   │   │   ├── ImageUpload.css
     │   │   │   │   │   └── ImageUpload.js
-    │   │   │   │   ├── ModelToggle
-    │   │   │   │   │   ├── ModelToggle.css
-    │   │   │   │   │   └── ModelToggle.js
+    │   │   │   │   └── ModelToggle
+    │   │   │   │       ├── ModelToggle.css
+    │   │   │   │       └── ModelToggle.js
     │   │   │   └── services
     │   │   │       ├── BreedParse.js
     │   │   │       └── DataService.js
