@@ -15,6 +15,7 @@ body {
   padding: 5px;
 }
 
+
 .site-button {
     background-color: #402a23;
     border-radius: 100px;
@@ -28,6 +29,9 @@ body {
     letter-spacing: 0;
     line-height: normal;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
   
 .site-button:hover {
