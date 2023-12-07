@@ -7,7 +7,7 @@
 export IMAGE_NAME="engenai-app-deployment"
 export BASE_DIR=$(pwd)
 export SECRETS_DIR=$(pwd)/secrets/
-export GCP_PROJECT="ac215project" # Change to your GCP Project
+export GCP_PROJECT="ac215project-399920" # Change to your GCP Project
 export GCP_ZONE="us-central1-a"
 export GOOGLE_APPLICATION_CREDENTIALS=/secrets/deployment.json
 

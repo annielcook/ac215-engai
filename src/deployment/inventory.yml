@@ -1,8 +1,8 @@
 all:
     vars:
       ansible_user: sa_115745935039111287097
-      ansible_ssh_private_key_file: "../../secrets/ssh-key-deployment"
-      gcp_service_account_file: "../../secrets/deployment.json"
+      ansible_ssh_private_key_file: "/secrets/ssh-key-deployment"
+      gcp_service_account_file: "/secrets/deployment.json"
       gcp_service_account_email: "deployment@ac215project-399920.iam.gserviceaccount.com"
       gcp_auth_kind: "serviceaccount"
       gcp_scopes: "https://www.googleapis.com/auth/compute"
@@ -19,4 +19,4 @@ all:
     children:
         appserver:
             hosts:
-                34.122.179.189:
+                34.29.136.180:
