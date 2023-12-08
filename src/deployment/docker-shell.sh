@@ -10,6 +10,8 @@ export SECRETS_DIR=$(pwd)/secrets/
 export GCP_PROJECT="ac215project-399920" # Change to your GCP Project
 export GCP_ZONE="us-central1-a"
 export GOOGLE_APPLICATION_CREDENTIALS=/secrets/deployment.json
+export GCP_REGION="us-east1"
+export BUCKET_URI="team-engai-model-breed"
 
 # Build the image based on the Dockerfile
 #docker build -t $IMAGE_NAME -f Dockerfile .
@@ -27,4 +29,6 @@ docker run --rm --name $IMAGE_NAME -ti \
 -e USE_GKE_GCLOUD_AUTH_PLUGIN=True \
 -e GCP_PROJECT=$GCP_PROJECT \
 -e GCP_ZONE=$GCP_ZONE \
+-e GCP_REGION=$GCP_REGION \
+-e BUCKET_URI=$BUCKET_URI \
 $IMAGE_NAME
