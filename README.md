@@ -162,6 +162,16 @@ Project Organization
 32 directories, 109 files
 
 **TODO move to correct location once we fill out Milestone 6 README**
+#### Kubernetes Deployment ####
+We deployed the frontend and backend containers to the kubernetes cluster to handle key distributed systems issues such as load balancing and failover.
+Note that the cluster contains more than 1 node to handle peak traffic loads. The ansible playbooks you can find allow us
+to manage code as infrastructure. As can be seen in the CI/CD section below these ansible scripts are called upon
+any changes to the code, so that new changes can be deployed to production rapidly and continuously. 
+
+
+Here is a screenshot of the Kubernetes cluster we are running in GCP:
+![image](https://github.com/annielcook/ac215-engai/blob/main/images/kubernetes-multi-node-screenshot.png)
+
 #### CI / CD: Deploy Using Github Actions ####
 We added CI/CD using GitHub Actions, such that we can trigger deployment or any other partial or full pipeline using GitHub Events. Our yaml file which instantiates the actions and associates them with events can be found under .github/workflows/ci-cd.yml.
 
