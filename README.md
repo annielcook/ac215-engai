@@ -172,6 +172,68 @@ any changes to the code, so that new changes can be deployed to production rapid
 Here is a screenshot of the Kubernetes cluster we are running in GCP:
 ![image](https://github.com/annielcook/ac215-engai/blob/main/images/kubernetes-multi-node-screenshot.png)
 
+#### Code Structure ####
+The following are the folders from the previous milestones: 
+
+- api-service
+- deployment
+- dvc
+- frontend-react
+- model-deployment
+- models
+- preprocessing
+- tensorizing
+- validation
+- workflow
+
+**API Service Container** 
+This container has all the python files to run and expose the backend apis. These APIs
+are called by the client side code to actually run model inference on the server side.
+
+To run the container locally:
+
+- Open a terminal and go to the location  src/api-service
+- Here you'll find docker-shell.sh. Run sh docker-shell.sh
+- Once inside the docker container run uvicorn_server
+- To view and test that the APIs are up. Go to http://localhost:9000/docs
+
+
+**Frontend Container** 
+
+This container contains all the files used for the react app. Note that this folder contains
+docker files for both development and production. To run the container locally:
+
+- Open a terminal and go to the location src/frontend
+- Run sh docker-shell.sh 
+- Once inside the docker container please run yarn start (if you haven't already run yarn install once)
+- Go to http://localhost:3000 to access the app locally
+
+**Deployment Container** 
+
+This container manages building and deploying each of our application containers. All of the containers get deployed to 
+GCR and the service starts to run in GCP
+
+To run the container locally:
+
+- Open a terminal and go to src/deployment
+- Run sh docker-shell.sh
+- Build and Push Docker Containers to GCR (Google Container Registry) by running:
+
+ansible-playbook deploy-docker-images.yml -i inventory.yml
+
+- Create and deploy the cluster using:
+
+ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=present
+
+- Note the nginx_ingress_ip that was outputted by the cluster command 
+- Visit http:// YOUR INGRESS IP.sslip.io to view the website
+
+If you want to run our ML flows checkout the directions under workflow. The following are the commands to run the pipelines:
+
+- Go to src/workflow
+- Run sh docker-shell.sh 
+- Run python3 workflow.py to get a list of directions on how to run each stage of the pipeline 
+
 #### CI / CD: Deploy Using Github Actions ####
 We added CI/CD using GitHub Actions, such that we can trigger deployment or any other partial or full pipeline using GitHub Events. Our yaml file which instantiates the actions and associates them with events can be found under .github/workflows/ci-cd.yml.
 
