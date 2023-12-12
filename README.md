@@ -1,7 +1,11 @@
 Team EngAi Milestone 6 Deliverable
 ==============================
 
-AC215 - Milestone 6
+As part of Milestone 6, we focused on the following:
+* Deploying on Kubernetes using Ansible
+* CI/CD through Github Actions
+* Documenting how to run services locally.
+* Writing a [Medium post](https://medium.com/@curren.iyer/dawgai-helping-dog-lovers-identify-their-favorite-breeds-9ef54bfb3368), shooting a [video](https://www.youtube.com/watch?v=Xx6u6FKaFNw) and creating a [slide deck](). 
 
 Project Organization
 ```bash
@@ -244,8 +248,8 @@ Below is a screenshot from the Github actions dashboard showing a few successful
 <img width="1082" alt="image" src="https://github.com/annielcook/ac215-engai/assets/6455793/e54b237d-cdaa-457a-90cc-a018a2d83e2e">
 
 
-
-# AC215 - Milestone 5 - DogWatcher (powered by DogNet)
+# See below for older milestone documentation:
+## AC215 - Milestone 5 - DawgAI (powered by DogNet)
 
 **Team Members**
 Nevil George, Juan Pablo Heusser, Curren Iyer, Annie Landefeld, Abhijit Pujare
