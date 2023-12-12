@@ -1,7 +1,7 @@
-Team EngAi Milestone 5 Deliverable
+Team EngAi Milestone 6 Deliverable
 ==============================
 
-AC215 - Milestone 5
+AC215 - Milestone 6
 
 Project Organization
 ```bash
@@ -161,7 +161,6 @@ Project Organization
 
 32 directories, 109 files
 
-**TODO move to correct location once we fill out Milestone 6 README**
 #### Kubernetes Deployment ####
 We deployed the frontend and backend containers to the kubernetes cluster to handle key distributed systems issues such as load balancing and failover.
 Note that the cluster contains more than 1 node to handle peak traffic loads. The ansible playbooks you can find allow us
