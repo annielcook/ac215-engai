@@ -252,6 +252,24 @@ If you want to run our ML flows checkout the directions under workflow. The foll
 - Run sh docker-shell.sh 
 - Run python3 workflow.py to get a list of directions on how to run each stage of the pipeline 
 
+**Load Testing and Deployment Best Practices**  
+
+In order to ensure that the application could handle different workloads and traffic patterns, we ran a number of different tests: 
+
+- We ran a series of tests where we uploaded different sized images onto the website to ensure that both the client side and server side code could handle different inputs. 
+- We also ran a series of experiments where we had multiple people (> 2) connect to the website at the same time and upload a picture of a dog to test scale. A more robust testing framework would have run a load test where far more connections would have been opened to the server to test it but given the time constraints we were unable to run this test. 
+- Another “load” test we did was we tested a deployment with 1,2, and 3 kubernetes nodes in the cluster and then ran step 2 to see how response times changed.
+
+**Deployment best practices**
+
+Additionally we followed the following deployment best practices :
+
+- We had a checklist that each of us personally consulted before pushing code to production (e.g. make sure no keys were committed)
+- We tried to maintain a culture of having code reviews to ensure code that was pushed was high quality
+- We had a rollback strategy in place to ensure that if a bug was pushed to production there was a commit we could rollback to
+- After anyone pushed code to production we ran a manual test to ensure that the application was still running properly 
+- Once we reached some level of stability with our deployment approach, we adopted  CI/CD to ensure that latest changes were pushed automatically  
+
 
 # See below for older milestone documentation:
 ## AC215 - Milestone 5 - DawgAI (powered by DogNet)
