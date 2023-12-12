@@ -5,7 +5,7 @@ As part of Milestone 6, we focused on the following:
 * Deploying on Kubernetes using Ansible
 * CI/CD through Github Actions
 * Documenting how to run services locally.
-* Writing a [Medium post](https://medium.com/@curren.iyer/dawgai-helping-dog-lovers-identify-their-favorite-breeds-9ef54bfb3368), shooting a [video](https://www.youtube.com/watch?v=Xx6u6FKaFNw) and creating a [slide deck](). 
+* Writing a [Medium post](https://medium.com/@curren.iyer/dawgai-helping-dog-lovers-identify-their-favorite-breeds-9ef54bfb3368), shooting a [video](https://www.youtube.com/watch?v=Xx6u6FKaFNw) and creating a [slide deck](https://hbs-my.sharepoint.com/:p:/r/personal/jheusser_mba2024_hbs_edu/_layouts/15/Doc.aspx?sourcedoc=%7BFD2C8DAB-9E1A-4C33-B5FC-4E83723DE83F%7D&file=Dawg.AI%20-%20Final%20Presentation.pptx&nav=eyJzSWQiOjI1OCwiY0lkIjozODI2MzIxODQzfQ&action=edit&mobileredirect=true). 
 
 Project Organization
 ```bash
