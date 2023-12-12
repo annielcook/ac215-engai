@@ -10,6 +10,9 @@ As part of Milestone 6, we focused on the following:
 Project Organization
 ```bash
 ├── LICENSE
+├── .github
+│   ├── workflows
+│   │   ├── ci-cd.yml
 ├── notebooks
 │   ├── breed_labels.txt
 │   ├── DogNet_Breed_Distillation.ipynb
@@ -175,11 +178,23 @@ any changes to the code, so that new changes can be deployed to production rapid
 Here is a screenshot of the Kubernetes cluster we are running in GCP:
 ![image](https://github.com/annielcook/ac215-engai/blob/main/images/kubernetes-multi-node-screenshot.png)
 
+#### CI / CD: Deploy Using Github Actions: [ci-cd.yml](https://github.com/annielcook/ac215-engai/blob/main/.github/workflows/ci-cd.yml) ####
+
+We added CI/CD using GitHub Actions, such that we can trigger deployment or any other partial or full pipeline using GitHub Events. Our yaml file which instantiates the actions and associates them with events can be found under .github/workflows/ci-cd.yml.
+
+Our CI/CD workflow accomplishes a few things
+- App deployment: utilizing the existing deployment container, on code changes we kick off the flow of building the docker image, pushing it to GCR, deploying changed containers to update the k8s cluster with ansible, and re-running vertex AI jobs if needed
+- Triggering individual steps: using different commit messages ("/run-data-preprocessing", "/run-ml-pipeline", etc), we can trigger individual steps like data pre-processing or running the full ml pipeline. Each of these steps is executed through a cli command from `cli.py`. 
+
+Below is a screenshot from the Github actions dashboard showing a few successful runs. First we ran it on a separate `gha-test` branch and then once it was up and working, we merged it into `main` and ran there.
+<img width="1082" alt="image" src="https://github.com/annielcook/ac215-engai/assets/6455793/e54b237d-cdaa-457a-90cc-a018a2d83e2e">
+
+
 #### Code Structure ####
 The following are the folders from the previous milestones: 
 
 - api-service
-- deployment
+- deployment (includes some Milestone 6 modifications for GH actions)
 - dvc
 - frontend-react
 - model-deployment
@@ -236,16 +251,6 @@ If you want to run our ML flows checkout the directions under workflow. The foll
 - Go to src/workflow
 - Run sh docker-shell.sh 
 - Run python3 workflow.py to get a list of directions on how to run each stage of the pipeline 
-
-#### CI / CD: Deploy Using Github Actions ####
-We added CI/CD using GitHub Actions, such that we can trigger deployment or any other partial or full pipeline using GitHub Events. Our yaml file which instantiates the actions and associates them with events can be found under .github/workflows/ci-cd.yml.
-
-Our CI/CD workflow accomplishes a few things
-- App deployment: utilizing the existing deployment container, on code changes we kick off the flow of building the docker image, pushing it to GCR, deploying changed containers to update the k8s cluster with ansible, and re-running vertex AI jobs if needed
-- Triggering individual steps: using different commit messages ("/run-data-preprocessing", "/run-ml-pipeline", etc), we can trigger individual steps like data pre-processing or running the full ml pipeline. Each of these steps is executed through a cli command from `cli.py`. 
-
-Below is a screenshot from the Github actions dashboard showing a few successful runs. First we ran it on a separate `gha-test` branch and then once it was up and working, we merged it into `main` and ran there.
-<img width="1082" alt="image" src="https://github.com/annielcook/ac215-engai/assets/6455793/e54b237d-cdaa-457a-90cc-a018a2d83e2e">
 
 
 # See below for older milestone documentation:
